@@ -1,5 +1,5 @@
 #include <p33fj128gp202.h>
-
+#include "I2C.h"
 #define FCY 40000000UL//
 
 _FICD(ICS_PGD2 & JTAGEN_OFF); // Para hacer debuging por el puerto 2
@@ -10,21 +10,18 @@ _FWDT(FWDTEN_OFF);
 
 void ConfigIni(void);
 void ConfigurarI2C(void);
+void ConfigurarGiroscopio();
 
-void __attribute__((__interrupt__)) _MI2IC1Interrupt(void){
-    
-}
 
 int main(void)
 {
     ConfigIni();
+    ConfigurarI2C();
+    ConfigurarGiroscopio();
     while(1){
         
     }
 }
-
-
-
 
 void ConfigIni (void) {
     // Configure Oscillator to operate the device at 40 MHz
@@ -49,7 +46,18 @@ void ConfigIni (void) {
 void ConfigurarI2C(void){ //TABLE 10.1 acelerometro
     //address 7bits
     
-    I2C1CONbits.A10M = 0;
+    I2C1BRG = 0x5D; // 0x5D
     
+    I2C1CONbits.I2CEN = 1;
+    
+    IFS1bits.SI2C1IF = 0;
+    I2C1CONbits.DISSLW = 1;
+    
+    I2C1CONbits.IPMIEN = 0;
+    __delay_us(20);
+}
+
+void ConfigurarGiroscopio(){
+    iniciarI2C();
     
 }
