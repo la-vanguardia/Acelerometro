@@ -8,12 +8,18 @@ _FWDT(FWDTEN_OFF);
 
 
 void ConfigIni(void);
+void ConfigurarI2C(void);
+
+void __attribute__((__interrupt__)) _MI2IC1Interrupt(void){
+    
+}
 
 int main(void)
 {
-
     ConfigIni();
-
+    while(1){
+        
+    }
 }
 
 
@@ -37,4 +43,12 @@ void ConfigIni (void) {
     OSCCON = 0x57;
     OSCCONbits.IOLOCK = 0;		// Peripherial pin select is not locked
 
+}
+
+void ConfigurarI2C(void){ //TABLE 10.1 acelerometro
+    //address 7bits
+    
+    I2C1CONbits.A10M = 0;
+    
+    
 }
