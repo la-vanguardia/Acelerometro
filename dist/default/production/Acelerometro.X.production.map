@@ -59,9 +59,9 @@ xc16-ld 1.36 (B)
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200                0xe0           0x150  (336)
-.text                        0x2e0                0x6a            0x9f  (159)
+.text                        0x2e0                0x68            0x9c  (156)
 
-                 Total "program" memory used (bytes):          0x1ef  (495) <1%
+                 Total "program" memory used (bytes):          0x1ec  (492) <1%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x2000]
@@ -91,13 +91,13 @@ External Symbols in Program Memory (by address):
                   0x0002c8                  __MI2IC1Interrupt
                   0x0002da                  __DefaultInterrupt
                   0x0002e0                  _main
-                  0x0002e8                  _ConfigIni
-                  0x000342                  _ConfigurarI2C
+                  0x0002e6                  _ConfigIni
+                  0x000340                  _ConfigurarI2C
 
 External Symbols in Program Memory (by name):
 
-                  0x0002e8                  _ConfigIni
-                  0x000342                  _ConfigurarI2C
+                  0x0002e6                  _ConfigIni
+                  0x000340                  _ConfigurarI2C
                   0x0002da                  __DefaultInterrupt
                   0x0002c8                  __MI2IC1Interrupt
                   0x000252                  __data_init
@@ -1044,8 +1044,8 @@ __c30_signature
  __c30_signature
                   0x0000a8          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
 
-.text             0x0002e0         0x6a
- .text            0x0002e0         0x6a build/default/production/main.o
+.text             0x0002e0         0x68
+ .text            0x0002e0         0x68 build/default/production/main.o
                   0x0002e0                  _main
-                  0x0002e8                  _ConfigIni
-                  0x000342                  _ConfigurarI2C
+                  0x0002e6                  _ConfigIni
+                  0x000340                  _ConfigurarI2C
