@@ -1,12 +1,12 @@
 Microchip Technology Inc, v1.36 (B)
 
 Tool Name:
-  c:\program files (x86)\microchip\xc16\v1.36\bin\bin\..\bin/elf-ld.exe
+  c:\program files (x86)\microchip\xc16\v1.36\bin\bin\..\bin/coff-ld.exe
 
 Command:
   -p33FJ128GP202 \
   -o \
-  dist/default/production/Acelerometro.X.production.elf \
+  dist/default/production/Acelerometro.X.production.cof \
   -Lc:/program files (x86)/microchip/xc16/v1.36/bin/bin/.. \
   -Lc:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib \
   -Lc:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../support/PIC24E/gld \
@@ -35,21 +35,21 @@ Command:
   --memorysummary \
   dist/default/production/memoryfile.xml \
   -start-group \
-  --library=lega-pic30-elf \
-  --library=m-elf \
-  --library=lega-c-elf \
+  --library=lega-pic30-coff \
+  --library=m-coff \
+  --library=lega-c-coff \
   -end-group \
 
 
 Optional library libp33FJ128GP202.a not found
 Archive member included because of file (symbol)
 
-c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
-                              (__resetPRI)
-c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
-                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o) (__data_init_standard)
-c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
-                              (__crt_start_mode_normal)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(crt0_standard.o)
+                              (_resetPRI)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(delay32.Lo)
+                              build/default/production/main.o (__delay32)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(data_init_standard.o)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(crt0_standard.o) (_data_init_standard)
 
 
 xc16-ld 1.36 (B)
@@ -58,18 +58,21 @@ xc16-ld 1.36 (B)
 
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
-.text                        0x200                0xe0           0x150  (336)
-.text                        0x2e0                0x68            0x9c  (156)
+.text                        0x200               0x10e           0x195  (405)
+.text                        0x30e               0x258           0x384  (900)
+.dinit                       0x566                 0xe            0x15  (21)
 
-                 Total "program" memory used (bytes):          0x1ec  (492) <1%
+                 Total "program" memory used (bytes):          0x52e  (1326) 1%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x2000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
+.nbss                        0x800                   0             0x2  (2)
+.bss                         0x802                   0            0x46  (70)
 
-                 Total "data" memory used (bytes):              0  (0) 
+                 Total "data" memory used (bytes):           0x48  (72) <1%
 
 
 Dynamic Memory Usage
@@ -77,34 +80,72 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x800                              0x2000  (8192)
+stack                        0x848                              0x1fb8  (8120)
 
-                 Maximum dynamic memory (bytes):         0x2000  (8192)
+                 Maximum dynamic memory (bytes):         0x1fb8  (8120)
 
+
+External Symbols in Data Memory (by address):
+
+                    0x0800                  _contador
+                    0x0801                  _bandera
+                    0x0802                  _datosRX
+                    0x0816                  _datosAcelerometro
+
+External Symbols in Data Memory (by name):
+
+                    0x0801                  _bandera
+                    0x0800                  _contador
+                    0x0816                  _datosAcelerometro
+                    0x0802                  _datosRX
 
 External Symbols in Program Memory (by address):
 
                   0x000200                  __resetPRI
-                  0x00023c                  __psv_init
-                  0x000252                  __data_init
-                  0x000252                  __data_init_standard
-                  0x0002c8                  __MI2IC1Interrupt
-                  0x0002da                  __DefaultInterrupt
-                  0x0002e0                  _main
-                  0x0002e6                  _ConfigIni
-                  0x000340                  _ConfigurarI2C
+                  0x000230                  __psv_init
+                  0x000240                  ___delay32
+                  0x000262                  __data_init_standard
+                  0x000262                  __data_init
+                  0x0002d8                  __U1RXInterrupt
+                  0x00030a                  __DefaultInterrupt
+                  0x00030e                  _iniciarComunicacion
+                  0x000326                  _trasmitirDato
+                  0x000360                  _trasmirDatos
+                  0x000394                  _recibirDato
+                  0x0003c4                  _recibirDatos
+                  0x000426                  _iniciarI2C
+                  0x000438                  _detenerI2C
+                  0x00044e                  _resetearI2C
+                  0x000460                  _main
+                  0x0004a2                  _ConfigIni
+                  0x0004fc                  _ConfigurarPines
+                  0x00050a                  _ConfigurarI2C
+                  0x00051c                  _ConfigurarGiroscopio
+                  0x000534                  _ConfigurarRS232
 
 External Symbols in Program Memory (by name):
 
-                  0x0002e6                  _ConfigIni
-                  0x000340                  _ConfigurarI2C
-                  0x0002da                  __DefaultInterrupt
-                  0x0002c8                  __MI2IC1Interrupt
-                  0x000252                  __data_init
-                  0x000252                  __data_init_standard
-                  0x00023c                  __psv_init
+                  0x0004a2                  _ConfigIni
+                  0x00051c                  _ConfigurarGiroscopio
+                  0x00050a                  _ConfigurarI2C
+                  0x0004fc                  _ConfigurarPines
+                  0x000534                  _ConfigurarRS232
+                  0x00030a                  __DefaultInterrupt
+                  0x0002d8                  __U1RXInterrupt
+                  0x000240                  ___delay32
+                  0x000262                  __data_init
+                  0x000262                  __data_init_standard
+                  0x000230                  __psv_init
                   0x000200                  __resetPRI
-                  0x0002e0                  _main
+                  0x000438                  _detenerI2C
+                  0x00030e                  _iniciarComunicacion
+                  0x000426                  _iniciarI2C
+                  0x000460                  _main
+                  0x000394                  _recibirDato
+                  0x0003c4                  _recibirDatos
+                  0x00044e                  _resetearI2C
+                  0x000360                  _trasmirDatos
+                  0x000326                  _trasmitirDato
 
 Memory Configuration
 
@@ -134,7 +175,7 @@ Linker script and memory map
 LOAD build/default/production/main.o
                     0x0001                  __MPLAB_BUILD = 0x1
 LOAD p33FJ128GP202
-LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libfx-elf.a
+LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libfx-coff.a
                     0xf80000                  __FBS = 0xf80000
                     0xf80002                  __FSS = 0xf80002
                     0xf80004                  __FGS = 0xf80004
@@ -163,30 +204,28 @@ LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libfx-elf.a
                   0x000002          0x2 SHORT 0x0 ((ABSOLUTE (__reset) >> 0x10) & 0x7f)
                   0x000003          0x2 SHORT 0x0
 
-.text             0x000200         0xe0
+.text             0x000200        0x10e
  *(.init)
- .init            0x000200         0x4c c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
-                  0x000200                  __resetPRI
-                  0x000200                  __reset
-                  0x00023c                  __psv_init
- .init            0x00024c         0x7c c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
-                  0x000252                  __data_init_standard
-                  0x000252                  __data_init
+ .init            0x000200         0x40 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(crt0_standard.o)
+                  0x000200                  _resetPRI
+                  0x000200                  _reset
+                  0x000230                  _psv_init
+ .init            0x000240         0x1c c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(delay32.Lo)
+                  0x000240                  __delay32
+ .init            0x00025c         0x7c c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(data_init_standard.o)
+                  0x000262                  _data_init_standard
+                  0x000262                  _data_init
  *(.user_init)
  *(.handle)
  *(.isr*)
- .isr.text        0x0002c8         0x12 build/default/production/main.o
-                  0x0002c8                  __MI2IC1Interrupt
- .isr             0x0002da          0x4 default_isr
-                  0x0002da                  __DefaultInterrupt
+ .isr.text        0x0002d8         0x32 build/default/production/main.o
+                  0x0002d8                  _U1RXInterrupt
+ .isr             0x00030a          0x4 default_isr
+                  0x00030a                  _DefaultInterrupt
  *(.libc)
  *(.libm)
  *(.libdsp)
  *(.lib*)
- .libpic30_crt_start_mode
-                  0x0002de          0x2 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-elf.a(crt_start_mode_normal.Leo)
-                  0x0002de                  __crt_start_mode
-                  0x0002de                  __crt_start_mode_normal
 
 usercode
  *(usercode)
@@ -234,26 +273,21 @@ __FUID3
 .comment
  *(.comment)
 
-.debug_info       0x000000        0x775
+.debug_info
  *(.debug_info)
- .debug_info      0x000000        0x775 build/default/production/main.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000         0xed
+.debug_abbrev
  *(.debug_abbrev)
- .debug_abbrev    0x000000         0xed build/default/production/main.o
 
-.debug_line       0x000000        0x109
+.debug_line
  *(.debug_line)
- .debug_line      0x000000        0x109 build/default/production/main.o
 
-.debug_frame      0x000000         0x84
+.debug_frame
  *(.debug_frame)
- .debug_frame     0x000000         0x84 build/default/production/main.o
 
-.debug_str        0x000000         0x22
+.debug_str
  *(.debug_str)
- .debug_str       0x000000         0x22 build/default/production/main.o
 
 .debug_loc
  *(.debug_loc)
@@ -262,18 +296,13 @@ __FUID3
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000         0x7b
  *(.debug_pubnames)
- .debug_pubnames
-                  0x000000         0x7b build/default/production/main.o
 
 .debug_ranges
  *(.debug_ranges)
 
-.debug_aranges    0x000000         0x18
+.debug_aranges
  *(.debug_aranges)
- .debug_aranges
-                  0x000000         0x18 build/default/production/main.o
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -1023,29 +1052,60 @@ __FUID3
                     0x0230                  UART2 = 0x230
                     0x0230                  _UART2 = 0x230
 START GROUP
-LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-elf.a
-LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-elf.a
-LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-elf.a
+LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a
+LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a
+LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a
 END GROUP
-OUTPUT(dist/default/production/Acelerometro.X.production.elf elf32-pic30)
+OUTPUT(dist/default/production/Acelerometro.X.production.cof coff-pic30)
+LOAD data_init
 LOAD default_isr
 
-.debug_pubtypes
-                  0x000018         0x84
- .debug_pubtypes
-                  0x000018         0x84 build/default/production/main.o
-
 __c30_signature
-                  0x00009c         0x12
+                  0x000000         0x18
  __c30_signature
-                  0x00009c          0x6 build/default/production/main.o
+                  0x000000          0x6 build/default/production/main.o
  __c30_signature
-                  0x0000a2          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
+                  0x000006          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(crt0_standard.o)
  __c30_signature
-                  0x0000a8          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
+                  0x00000c          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(delay32.Lo)
+ __c30_signature
+                  0x000012          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(data_init_standard.o)
 
-.text             0x0002e0         0x68
- .text            0x0002e0         0x68 build/default/production/main.o
-                  0x0002e0                  _main
-                  0x0002e6                  _ConfigIni
-                  0x000340                  _ConfigurarI2C
+.nbss               0x0800          0x2
+ .nbss              0x0800          0x2 build/default/production/main.o
+                    0x0800                  contador
+                    0x0801                  bandera
+
+.bss                0x0802         0x46
+ .bss               0x0802         0x46 build/default/production/main.o
+                    0x0802                  datosRX
+                    0x0816                  datosAcelerometro
+
+.config_ALTI2C    0xf8000c          0x2
+ .config_ALTI2C
+                  0xf8000c          0x2 build/default/production/main.o
+
+.ivt._U1RXInterrupt
+                  0x00002a          0x2
+ .ivt._U1RXInterrupt
+                  0x00002a          0x2 build/default/production/main.o
+
+.text             0x00030e        0x258
+ .text            0x00030e        0x258 build/default/production/main.o
+                  0x00030e                  iniciarComunicacion
+                  0x000326                  trasmitirDato
+                  0x000360                  trasmirDatos
+                  0x000394                  recibirDato
+                  0x0003c4                  recibirDatos
+                  0x000426                  iniciarI2C
+                  0x000438                  detenerI2C
+                  0x00044e                  resetearI2C
+                  0x000460                  main
+                  0x0004a2                  ConfigIni
+                  0x0004fc                  ConfigurarPines
+                  0x00050a                  ConfigurarI2C
+                  0x00051c                  ConfigurarGiroscopio
+                  0x000534                  ConfigurarRS232
+
+.dinit            0x000566          0xe
+ .dinit           0x000566          0xe data_init

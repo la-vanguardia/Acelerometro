@@ -1,3 +1,6 @@
+#include <xc.h>
+#include <libpic30.h>
+
 #define READ 1
 #define WRITE 0
 
@@ -10,29 +13,28 @@ void resetearI2C();
 void iniciarI2C();
 void detenerI2C();
 
-void inciarComunicacion(unsigned char codigo_familia, unsigned char read){
+void iniciarComunicacion(unsigned char codigo_familia, unsigned char read){
     unsigned char codigo = ( codigo_familia<<1 ) + read;
-    iniciarI2C();
     trasmitirDato( codigo );
 }
 
 void trasmitirDato(unsigned char dato){
+    while(I2C1STATbits.TBF == 1);
     IFS1bits.MI2C1IF = 0; //bajo la bandera
     
     I2C1TRN = dato; //envio el dato
-    
+
     while(I2C1STATbits.ACKSTAT == 1); //espero que baje el ackstat
     while(IFS1bits.MI2C1IF == 1); //
-    IFS1bits.MI2C1IF = 0;
     while(I2C1STATbits.TRSTAT == 1); //espero al tr
 }
 
 void trasmirDatos(unsigned char *datos, unsigned char numero_datos, unsigned char dirreccion, unsigned char codigo_familia){
     iniciarComunicacion(codigo_familia, WRITE);
     trasmitirDato(dirreccion);
-    iniciarComunicacion(codigo_familia, WRITE);
+    
     unsigned char i;
-    for(i=0, i<numero_datos; i++){
+    for(i=0; i<numero_datos; i++){
         trasmitirDato( datos[i] );
     }
     detenerI2C();
@@ -43,9 +45,12 @@ unsigned char recibirDato(unsigned char detener){
     
     IFS1bits.MI2C1IF = 0; //bajo bandera
     I2C1CONbits.RCEN = 1; //habilito recepcion
-    while(IFS1bits.MI2C1IF == 1); //espero bandera
-    IFS1bits.MI2C1IF = 0; //bajo bandera
     
+    
+    while(IFS1bits.MI2C1IF == 1); //espero bandera
+    
+    IFS1bits.MI2C1IF = 0; //bajo bandera
+    while(I2C1STATbits.RBF == 0);
     dato = I2C1RCV; //leo el dato
     
     if(detener == 1){
@@ -59,12 +64,19 @@ void recibirDatos(unsigned char *datos, unsigned char numero_datos, unsigned cha
     iniciarI2C();
     iniciarComunicacion(codigo_familia, WRITE);
     trasmitirDato(dirreccion);
+    
+    resetearI2C();
     iniciarComunicacion(codigo_familia, READ);
     unsigned char i=0;
     for(i=0; i<numero_datos; i++){
         
         datos[i] = recibirDato(0);
-        __delay_us(20);
+        if(i != (numero_datos - 1) ){
+            I2C1CONbits.ACKDT = 0; // ACK
+            I2C1CONbits.ACKEN = 1; // habilitador ACK
+            while(I2C1CONbits.ACKEN == 1);
+        }
+        
     }
     
     detenerI2C();
@@ -78,6 +90,13 @@ void iniciarI2C(){
 
 void detenerI2C(){
     I2C1CONbits.ACKDT = 1; // ACK
-    I2CCONbits.ACKEN = 1; // habilitador ACK
-    while(I2CCONbits.ACKEN == 1);
+    I2C1CONbits.ACKEN = 1; // habilitador ACK
+    while(I2C1CONbits.ACKEN == 1);
+    I2C1CONbits.PEN = 1;
+
+}
+
+void resetearI2C(){
+    I2C1CONbits.RSEN = 1;
+    while(I2C1CONbits.RSEN == 1);
 }
