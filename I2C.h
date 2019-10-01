@@ -93,7 +93,7 @@ void detenerI2C(){
     I2C1CONbits.ACKEN = 1; // habilitador ACK
     while(I2C1CONbits.ACKEN == 1);
     I2C1CONbits.PEN = 1;
-
+    while(I2C1CONbits.PEN == 1);
 }
 
 void resetearI2C(){

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/Acelerometro.X.production.cof">
+  <executable name="dist/default/debug/Acelerometro.X.debug.cof">
     <memory name="data">
       <units>bytes</units>
       <length>8192</length>
-      <used>28</used>
-      <free>8164</free>
+      <used>108</used>
+      <free>8084</free>
     </memory>
     <memory name="program">
       <units>bytes</units>
       <length>131328</length>
-      <used>2508</used>
-      <free>128820</free>
+      <used>2274</used>
+      <free>129054</free>
     </memory>
   </executable>
 </project>

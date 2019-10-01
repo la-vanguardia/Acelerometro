@@ -1,3 +1,4 @@
 build/default/production/main.o:  \
 main.c  \
-I2C.h 
+I2C.h  \
+comunicacion.h 
