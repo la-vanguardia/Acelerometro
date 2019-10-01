@@ -24,7 +24,8 @@ enum Estados{
     ESPERAR,
     CLASIFICAR,
     TRANSMITIR,
-    DATOSACELEROMETRO
+    DATOSACELEROMETRO,
+    COMUNICACIONCONTINUA
 };
 
 enum Tramas{
@@ -50,6 +51,7 @@ void ConfigurarPines(void);
 void ConfigurarI2C(void);
 void ConfigurarGiroscopio();
 void ConfigurarRS232();
+void ConfigurarTMR();
 void ConfigurarFIFO();
 void eClasificarTrama(unsigned char trama, unsigned char *estado);
 void eTransmitirDatos();
@@ -93,13 +95,17 @@ int main(void)
                 eClasificarTrama(trama, &estado);
                 break;
             case TRANSMITIR:
-                aCrearVectorEnviar(0xFE,  vcomunicacionAcelerometro[1], 0x00, vdatos, vdatos_enviar);
+                aCrearVectorEnviar(RX,  vcomunicacionAcelerometro[1], 0x00, vdatos, vdatos_enviar);
                 aTransmitirDatos();
                 eTransmitirDatos();
                 break;
             case DATOSACELEROMETRO:
                 aComunicacion(vdatos);
                 eComunicar(&estado);
+                break;
+            case COMUNICACIONCONTINUA:
+                
+                
                 break;
             default:
                 estado = ESPERAR;
@@ -177,8 +183,6 @@ void ConfigurarFIFO(){
     
 }
 
-
-
 void eClasificarTrama(unsigned char trama, unsigned char *estado){
     estado[0] = DATOSACELEROMETRO;
     switch(trama){
@@ -206,11 +210,12 @@ void eClasificarTrama(unsigned char trama, unsigned char *estado){
             break;
             
         case INICIOCOMUNICACIONCONTINUA:
-            
+            estado[0] = COMUNICACIONCONTINUA;
             break;
             
         case DETENERTCOMUNIACIONCONTINUA:
             
+            estado[0] = COMUNICACIONCONTINUA;
             break;
             
         case ENCENDERLED:
@@ -219,17 +224,26 @@ void eClasificarTrama(unsigned char trama, unsigned char *estado){
             break;
             
         case APAGARLED:
+            
             estado[0] = ESPERAR;
             break;
             
         case TAPDETECTIONON:
-            
+            vcomunicacionAcelerometro[0] = WRITE;
+            vcomunicacionAcelerometro[1] = 0x00;
+            vcomunicacionAcelerometro[2] = 0x00;
             break;
             
         case TAPDETECTIONOFF:
-            
+            vcomunicacionAcelerometro[0] = WRITE;
+            vcomunicacionAcelerometro[1] = 0x00;
+            vcomunicacionAcelerometro[2] = 0x00;
             break;
     }
+}
+
+void eTransmitirDatos(){
+    
 }
 
 void eComunicar(unsigned char *estado){
