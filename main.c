@@ -42,7 +42,7 @@ enum Tramas{
 
 
 unsigned char contador=0, vdatosRX[20] = {'\0'}, bandera = 0, estado = ESPERAR, numero_datos = 0;
-unsigned char vdatosAcelerometro[50] = {0}, vdatos_enviar[100] = {0};
+unsigned char vdatos_enviar[60] = {0}, vcomunicacionAcelerometro[3] = {0};
 
 
 void ConfigIni(void);
@@ -50,10 +50,12 @@ void ConfigurarPines(void);
 void ConfigurarI2C(void);
 void ConfigurarGiroscopio();
 void ConfigurarRS232();
-unsigned char obtenerTrama();
+void ConfigurarFIFO();
 void eClasificarTrama(unsigned char trama, unsigned char *estado);
 void eTransmitirDatos();
-
+void eComunicar(unsigned char *estado);
+void aComunicacion(unsigned char *datos);
+void aTransmitirDatos();
 
 void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(){
     unsigned char datoRX = U1RXREG;
@@ -78,29 +80,26 @@ int main(void)
     ConfigurarRS232();
     ConfigurarGiroscopio();
     unsigned char ID = 0, trama = 0;
-    
+    unsigned char vdatos[50] = {0};
+
    
     while(1){
-        if(bandera == 1){
-            bandera = 0;
-            recibirDatos(vdatosAcelerometro , 2, 0x01, ACELEROMETRO);
-             U1TXREG = vdatosAcelerometro[0];
-             __delay_ms(20);
-             U1TXREG = vdatosAcelerometro[1];
-        }
         switch(estado){
             case ESPERAR:
                 
                 break;
             case CLASIFICAR: //Otra maquina de estados
-                trama = obtenerTrama();
-                eClasificarTrama();
+                aObtenerDatos(vdatosRX, vdatos, &trama);
+                eClasificarTrama(trama, &estado);
                 break;
             case TRANSMITIR:
+                aCrearVectorEnviar(0xFE,  vcomunicacionAcelerometro[1], 0x00, vdatos, vdatos_enviar);
+                aTransmitirDatos();
                 eTransmitirDatos();
                 break;
             case DATOSACELEROMETRO:
-                
+                aComunicacion(vdatos);
+                eComunicar(&estado);
                 break;
             default:
                 estado = ESPERAR;
@@ -174,32 +173,36 @@ void ConfigurarRS232(){
 
 }
 
-unsigned char obtenerTrama(){
-    unsigned char datos[50] = {0};
-    obtenerDatos(vdatosRX, datos);
-    return datos[0]; //depende de orden
+void ConfigurarFIFO(){
+    
 }
 
+
+
 void eClasificarTrama(unsigned char trama, unsigned char *estado){
+    estado[0] = DATOSACELEROMETRO;
     switch(trama){
         case TODOSREGISTROS:
-            recibirDatos(vdatosAcelerometro, cALL, 0x00, ACELEROMETRO);
-            numero_datos = cALL;
-            estado[0] = TRANSMITIR;
+            vcomunicacionAcelerometro[0] = READ;
+            vcomunicacionAcelerometro[1] = cALL;
+            vcomunicacionAcelerometro[2] = 0x00;
             break;
             
         case ACELERACIONES:
-            recibirDatos(vdatosAcelerometro, 6, 0x00, ACELEROMETRO);
-            numero_datos = 6;
-            estado[0] = TRANSMITIR;
+            vcomunicacionAcelerometro[0] = READ;
+            vcomunicacionAcelerometro[1] = 6;
+            vcomunicacionAcelerometro[2] = 0x00;
             break;      
             
         case GUARDARDATO:
-            
+            vcomunicacionAcelerometro[0] = WRITE;
+            vcomunicacionAcelerometro[1] = 0x00;
+            vcomunicacionAcelerometro[2] = 0x00;
             break;
             
         case CONFIGURARFIFO:
-            
+            ConfigurarFIFO();
+            estado[0] = ESPERAR;
             break;
             
         case INICIOCOMUNICACIONCONTINUA:
@@ -212,10 +215,11 @@ void eClasificarTrama(unsigned char trama, unsigned char *estado){
             
         case ENCENDERLED:
             
+            estado[0] = ESPERAR;
             break;
             
         case APAGARLED:
-            
+            estado[0] = ESPERAR;
             break;
             
         case TAPDETECTIONON:
@@ -228,3 +232,28 @@ void eClasificarTrama(unsigned char trama, unsigned char *estado){
     }
 }
 
+void eComunicar(unsigned char *estado){
+    switch(vcomunicacionAcelerometro[0]){
+        case READ:
+            estado[0] = TRANSMITIR;
+            break;
+        case WRITE:
+            estado[0] = ESPERAR;
+            break;
+    }
+}
+
+void aComunicacion(unsigned char *datos){
+    switch(vcomunicacionAcelerometro[0]){
+        case READ:
+            trasmirDatos(datos, vcomunicacionAcelerometro[1], vcomunicacionAcelerometro[2], ACELEROMETRO);
+            break;
+        case WRITE:
+            recibirDatos(datos, vcomunicacionAcelerometro[1], vcomunicacionAcelerometro[2], ACELEROMETRO);
+            break;
+    }
+}
+
+void aTransmitirDatos(){
+    
+}

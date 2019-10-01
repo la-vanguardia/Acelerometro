@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void crearVectorEnviar(unsigned char codigo, unsigned char numero_datos, unsigned char *datos, unsigned char *enviar){ //orden = X
+void aCrearVectorEnviar(unsigned char codigo, unsigned char numero_datos, unsigned char orden,unsigned char *datos, unsigned char *enviar){ 
     unsigned char numero_bytes = 3 + numero_datos;
     unsigned char i;
     for(i=0; i<numero_bytes  ;i++){
@@ -15,7 +15,7 @@ void crearVectorEnviar(unsigned char codigo, unsigned char numero_datos, unsigne
                 enviar[1] = numero_bytes;
                 break;
             case 2:
-                enviar[2] = 0; //Definir ORDEN
+                enviar[2] = orden; //Definir ORDEN
                 break;
             default:
                 enviar[i] = datos[i - 3];
@@ -23,10 +23,10 @@ void crearVectorEnviar(unsigned char codigo, unsigned char numero_datos, unsigne
     }
 }
 
-void obtenerDatos(unsigned char *recibido, unsigned char *datos){
+void aObtenerDatos(unsigned char *recibido, unsigned char *datos, unsigned char *trama){
     unsigned char numero_datos = recibido[1] - 3;
     unsigned char i;
-    
+    trama[0] = recibido[2];
     for(i=0; i<numero_datos; i++){
         datos[i] = recibido[i + 3];
     }
