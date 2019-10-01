@@ -12,6 +12,7 @@ void recibirDatos(unsigned char *datos, unsigned char numero_datos, unsigned cha
 void resetearI2C();
 void iniciarI2C();
 void detenerI2C();
+unsigned char Longitud=0;
 
 void iniciarComunicacion(unsigned char codigo_familia, unsigned char read){
     unsigned char codigo = ( codigo_familia<<1 ) + read;
@@ -68,6 +69,7 @@ void recibirDatos(unsigned char *datos, unsigned char numero_datos, unsigned cha
     resetearI2C();
     iniciarComunicacion(codigo_familia, READ);
     unsigned char i=0;
+    Longitud=numero_datos;
     for(i=0; i<numero_datos; i++){
         
         datos[i] = recibirDato(0);

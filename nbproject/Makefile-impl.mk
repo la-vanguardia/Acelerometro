@@ -24,7 +24,7 @@ CLEAN_SUBPROJECTS=${CLEAN_SUBPROJECTS_${SUBPROJECTS}}
 
 
 # Project Name
-PROJECTNAME=Acelerometro.X
+PROJECTNAME=Acelerometro
 
 # Active Configuration
 DEFAULTCONF=default

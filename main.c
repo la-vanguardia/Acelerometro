@@ -26,11 +26,12 @@ void ConfigurarPines(void);
 void ConfigurarI2C(void);
 void ConfigurarGiroscopio();
 void ConfigurarRS232();
+void EnviarRS232 ( unsigned char *text);
 
 void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(){
     unsigned char datoRX = U1RXREG;
     IFS0bits.U1RXIF = 0;
-    if(datoRX == 0x0D){
+    if(datoRX == 0x0D){  //0x0D Finaliza el mensaje
         bandera = 1;
         contador = 0;
     }
@@ -48,16 +49,18 @@ int main(void)
     ConfigurarPines();
     ConfigurarRS232();
     ConfigurarGiroscopio();
-    unsigned char ID = 0;
     U1TXREG = 'H';
    
     while(1){
         if(bandera == 1){
             bandera = 0;
             recibirDatos(datosAcelerometro , 2, 0x01, ACELEROMETRO);
-             U1TXREG = datosAcelerometro[0];
+          
+            EnviarRS232(datosAcelerometro);
+                    
+             /*U1TXREG = datosAcelerometro[0];
              __delay_ms(20);
-             U1TXREG = datosAcelerometro[1];
+             U1TXREG = datosAcelerometro[1];*/
         }
         
         
@@ -89,41 +92,48 @@ void ConfigurarPines(){
     ADPCFG = 0xFFFF;
 }
 
-void ConfigurarI2C(void){ //TABLE 10.1 acelerometro
-    //address 7bits
-    I2C1BRG = 0x5D; // 0x5D   
+void ConfigurarI2C(void){ 
+    I2C1BRG = 0x5D; // Velocidad para 400KHz y 40MHz (Ecuacion 19-1)   
     I2C1CONbits.I2CEN = 1;    
-    IFS1bits.SI2C1IF = 0;
-    I2C1CONbits.DISSLW = 1;   
+    IFS1bits.SI2C1IF = 0;  //Bandera de interrupcion I2C esclavo
+    I2C1CONbits.DISSLW = 1;   //Desabilitar Slew Rate
     I2C1CONbits.IPMIEN = 0;
 }
 
 void ConfigurarGiroscopio(){
     iniciarI2C();
     iniciarComunicacion(ACELEROMETRO, WRITE);
-    trasmitirDato(0x2A);
-    trasmitirDato(0x09);
+    trasmitirDato(0x2A); //Registro para despertar el acelerometro
+    trasmitirDato(0x09); //Active mode
     detenerI2C();
 }
 
 void ConfigurarRS232(){
-    
-    
+   
     RPINR18bits.U1RXR = 0b01000;
     RPOR3bits.RP7R = 0b00011;
 
     U1BRG = 129;
     
- 
-    
     U1STAbits.UTXISEL1 = 1;
    
-    U1MODEbits.UARTEN = 1; // ENABLE
-    IEC0bits.U1RXIE=1; //interrupcion por recepcion
-    U1STAbits.UTXEN = 1;  // HABILITA TRANSMISION
+    U1MODEbits.UARTEN = 1; 
+    IEC0bits.U1RXIE=1; //Interrupcion por recepcion
+    U1STAbits.UTXEN = 1;  
   
     __delay_us(60); 
     IFS0bits.U1TXIF = 0;
     IFS0bits.U1RXIF = 0;
 
+}
+
+void EnviarRS232 ( unsigned char *text){
+    unsigned char i=0;
+    
+    for (i=0; i<Longitud;i++){
+        
+        U1TXREG = text[i];
+        __delay_ms(20);
+          
+    }   
 }

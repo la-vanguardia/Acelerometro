@@ -6,7 +6,7 @@ Tool Name:
 Command:
   -p33FJ128GP202 \
   -o \
-  dist/default/production/Acelerometro.X.production.cof \
+  dist/default/production/Acelerometro.production.cof \
   -Lc:/program files (x86)/microchip/xc16/v1.36/bin/bin/.. \
   -Lc:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib \
   -Lc:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../support/PIC24E/gld \
@@ -30,7 +30,7 @@ Command:
   --stackguard=16 \
   --no-force-link \
   --smart-io \
-  -Map=dist/default/production/Acelerometro.X.production.map \
+  -Map=dist/default/production/Acelerometro.production.map \
   --report-mem \
   --memorysummary \
   dist/default/production/memoryfile.xml \
@@ -59,20 +59,20 @@ xc16-ld 1.36 (B)
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0x10e           0x195  (405)
-.text                        0x30e               0x258           0x384  (900)
-.dinit                       0x566                 0xe            0x15  (21)
+.text                        0x30e               0x27a           0x3b7  (951)
+.dinit                       0x588                 0xe            0x15  (21)
 
-                 Total "program" memory used (bytes):          0x52e  (1326) 1%
+                 Total "program" memory used (bytes):          0x561  (1377) 1%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x2000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0             0x2  (2)
-.bss                         0x802                   0            0x46  (70)
+.nbss                        0x800                   0             0x4  (4)
+.bss                         0x804                   0            0x46  (70)
 
-                 Total "data" memory used (bytes):           0x48  (72) <1%
+                 Total "data" memory used (bytes):           0x4a  (74) <1%
 
 
 Dynamic Memory Usage
@@ -80,24 +80,26 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x848                              0x1fb8  (8120)
+stack                        0x84a                              0x1fb6  (8118)
 
-                 Maximum dynamic memory (bytes):         0x1fb8  (8120)
+                 Maximum dynamic memory (bytes):         0x1fb6  (8118)
 
 
 External Symbols in Data Memory (by address):
 
-                    0x0800                  _contador
-                    0x0801                  _bandera
-                    0x0802                  _datosRX
-                    0x0816                  _datosAcelerometro
+                    0x0800                  _Longitud
+                    0x0801                  _contador
+                    0x0802                  _bandera
+                    0x0804                  _datosRX
+                    0x0818                  _datosAcelerometro
 
 External Symbols in Data Memory (by name):
 
-                    0x0801                  _bandera
-                    0x0800                  _contador
-                    0x0816                  _datosAcelerometro
-                    0x0802                  _datosRX
+                    0x0800                  _Longitud
+                    0x0802                  _bandera
+                    0x0801                  _contador
+                    0x0818                  _datosAcelerometro
+                    0x0804                  _datosRX
 
 External Symbols in Program Memory (by address):
 
@@ -113,23 +115,25 @@ External Symbols in Program Memory (by address):
                   0x000360                  _trasmirDatos
                   0x000394                  _recibirDato
                   0x0003c4                  _recibirDatos
-                  0x000426                  _iniciarI2C
-                  0x000438                  _detenerI2C
-                  0x00044e                  _resetearI2C
-                  0x000460                  _main
-                  0x0004a2                  _ConfigIni
-                  0x0004fc                  _ConfigurarPines
-                  0x00050a                  _ConfigurarI2C
-                  0x00051c                  _ConfigurarGiroscopio
-                  0x000534                  _ConfigurarRS232
+                  0x00042c                  _iniciarI2C
+                  0x00043e                  _detenerI2C
+                  0x000454                  _resetearI2C
+                  0x000466                  _main
+                  0x000496                  _ConfigIni
+                  0x0004f0                  _ConfigurarPines
+                  0x0004fe                  _ConfigurarI2C
+                  0x000510                  _ConfigurarGiroscopio
+                  0x000528                  _ConfigurarRS232
+                  0x00055a                  _EnviarRS232
 
 External Symbols in Program Memory (by name):
 
-                  0x0004a2                  _ConfigIni
-                  0x00051c                  _ConfigurarGiroscopio
-                  0x00050a                  _ConfigurarI2C
-                  0x0004fc                  _ConfigurarPines
-                  0x000534                  _ConfigurarRS232
+                  0x000496                  _ConfigIni
+                  0x000510                  _ConfigurarGiroscopio
+                  0x0004fe                  _ConfigurarI2C
+                  0x0004f0                  _ConfigurarPines
+                  0x000528                  _ConfigurarRS232
+                  0x00055a                  _EnviarRS232
                   0x00030a                  __DefaultInterrupt
                   0x0002d8                  __U1RXInterrupt
                   0x000240                  ___delay32
@@ -137,13 +141,13 @@ External Symbols in Program Memory (by name):
                   0x000262                  __data_init_standard
                   0x000230                  __psv_init
                   0x000200                  __resetPRI
-                  0x000438                  _detenerI2C
+                  0x00043e                  _detenerI2C
                   0x00030e                  _iniciarComunicacion
-                  0x000426                  _iniciarI2C
-                  0x000460                  _main
+                  0x00042c                  _iniciarI2C
+                  0x000466                  _main
                   0x000394                  _recibirDato
                   0x0003c4                  _recibirDatos
-                  0x00044e                  _resetearI2C
+                  0x000454                  _resetearI2C
                   0x000360                  _trasmirDatos
                   0x000326                  _trasmitirDato
 
@@ -1056,7 +1060,7 @@ LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30
 LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a
 LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a
 END GROUP
-OUTPUT(dist/default/production/Acelerometro.X.production.cof coff-pic30)
+OUTPUT(dist/default/production/Acelerometro.production.cof coff-pic30)
 LOAD data_init
 LOAD default_isr
 
@@ -1071,15 +1075,16 @@ __c30_signature
  __c30_signature
                   0x000012          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(data_init_standard.o)
 
-.nbss               0x0800          0x2
- .nbss              0x0800          0x2 build/default/production/main.o
-                    0x0800                  contador
-                    0x0801                  bandera
+.nbss               0x0800          0x4
+ .nbss              0x0800          0x4 build/default/production/main.o
+                    0x0800                  Longitud
+                    0x0801                  contador
+                    0x0802                  bandera
 
-.bss                0x0802         0x46
- .bss               0x0802         0x46 build/default/production/main.o
-                    0x0802                  datosRX
-                    0x0816                  datosAcelerometro
+.bss                0x0804         0x46
+ .bss               0x0804         0x46 build/default/production/main.o
+                    0x0804                  datosRX
+                    0x0818                  datosAcelerometro
 
 .config_ALTI2C    0xf8000c          0x2
  .config_ALTI2C
@@ -1090,22 +1095,23 @@ __c30_signature
  .ivt._U1RXInterrupt
                   0x00002a          0x2 build/default/production/main.o
 
-.text             0x00030e        0x258
- .text            0x00030e        0x258 build/default/production/main.o
+.text             0x00030e        0x27a
+ .text            0x00030e        0x27a build/default/production/main.o
                   0x00030e                  iniciarComunicacion
                   0x000326                  trasmitirDato
                   0x000360                  trasmirDatos
                   0x000394                  recibirDato
                   0x0003c4                  recibirDatos
-                  0x000426                  iniciarI2C
-                  0x000438                  detenerI2C
-                  0x00044e                  resetearI2C
-                  0x000460                  main
-                  0x0004a2                  ConfigIni
-                  0x0004fc                  ConfigurarPines
-                  0x00050a                  ConfigurarI2C
-                  0x00051c                  ConfigurarGiroscopio
-                  0x000534                  ConfigurarRS232
+                  0x00042c                  iniciarI2C
+                  0x00043e                  detenerI2C
+                  0x000454                  resetearI2C
+                  0x000466                  main
+                  0x000496                  ConfigIni
+                  0x0004f0                  ConfigurarPines
+                  0x0004fe                  ConfigurarI2C
+                  0x000510                  ConfigurarGiroscopio
+                  0x000528                  ConfigurarRS232
+                  0x00055a                  EnviarRS232
 
-.dinit            0x000566          0xe
- .dinit           0x000566          0xe data_init
+.dinit            0x000588          0xe
+ .dinit           0x000588          0xe data_init
