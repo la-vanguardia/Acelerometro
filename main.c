@@ -11,14 +11,37 @@ _FWDT(FWDTEN_OFF);
 #pragma config ALTI2C=ON // uso los pines alternativos de i2c
 
 #include "I2C.h"
-
+#include "comunicacion.h"
 
 #define ACELEROMETRO 0x1C
 #define DIRECCION_ID 0x0D
+#define TX 0xFD
+#define RX 0xFE
 
 
-unsigned char contador=0, datosRX[20] = {'\0'}, bandera = 0;
-unsigned char datosAcelerometro[50] = {0};
+enum Estados{
+    Esperar,
+    Clasificar,
+    Transmitir,
+    Acelerometro
+};
+
+enum Tramas{
+    TodosRegistros = 0x41,
+    Aceleraciones,
+    GuardarDato,
+    ConfiguracionFIFO,
+    InicioAceleracionesContinuas,
+    DetenerAceleracionesContinuas,
+    EncenderLed,
+    ApargarLed,
+    TapDetectionOn,
+    TapDetectionOff
+};
+
+
+unsigned char contador=0, datosRX[20] = {'\0'}, bandera = 0, estado = Esperar;
+unsigned char datosAcelerometro[50] = {0}, datos_enviar[100] = {0};
 
 
 void ConfigIni(void);
@@ -26,6 +49,7 @@ void ConfigurarPines(void);
 void ConfigurarI2C(void);
 void ConfigurarGiroscopio();
 void ConfigurarRS232();
+unsigned char eClasificarTrama(unsigned char *datos); //devuelte la trama a utilizar
 
 void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(){
     unsigned char datoRX = U1RXREG;
@@ -38,6 +62,7 @@ void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(){
         datosRX[contador] = datoRX;
         contador++;
     }
+    
 }
 
 
@@ -49,7 +74,7 @@ int main(void)
     ConfigurarRS232();
     ConfigurarGiroscopio();
     unsigned char ID = 0;
-    U1TXREG = 'H';
+    
    
     while(1){
         if(bandera == 1){
@@ -58,6 +83,22 @@ int main(void)
              U1TXREG = datosAcelerometro[0];
              __delay_ms(20);
              U1TXREG = datosAcelerometro[1];
+        }
+        switch(estado){
+            case Esperar:
+                
+                break;
+            case Clasificar: //Otra maquina de estados
+                
+                break;
+            case Transmitir:
+                
+                break;
+            case Acelerometro:
+                
+                break;
+            default:
+                estado = Esperar;
         }
         
         
