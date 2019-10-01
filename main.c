@@ -13,6 +13,7 @@ _FWDT(FWDTEN_OFF);
 #include "I2C.h"
 #include "comunicacion.h"
 
+#define cALL 50
 #define ACELEROMETRO 0x1C
 #define DIRECCION_ID 0x0D
 #define TX 0xFD
@@ -20,28 +21,28 @@ _FWDT(FWDTEN_OFF);
 
 
 enum Estados{
-    Esperar,
-    Clasificar,
-    Transmitir,
-    Acelerometro
+    ESPERAR,
+    CLASIFICAR,
+    TRANSMITIR,
+    DATOSACELEROMETRO
 };
 
 enum Tramas{
-    TodosRegistros = 0x41,
-    Aceleraciones,
-    GuardarDato,
-    ConfiguracionFIFO,
-    InicioAceleracionesContinuas,
-    DetenerAceleracionesContinuas,
-    EncenderLed,
-    ApargarLed,
-    TapDetectionOn,
-    TapDetectionOff
+    TODOSREGISTROS = 0x41,
+    ACELERACIONES,
+    GUARDARDATO,
+    CONFIGURARFIFO,
+    INICIOCOMUNICACIONCONTINUA,
+    DETENERTCOMUNIACIONCONTINUA,
+    ENCENDERLED,
+    APAGARLED,
+    TAPDETECTIONON,
+    TAPDETECTIONOFF
 };
 
 
-unsigned char contador=0, datosRX[20] = {'\0'}, bandera = 0, estado = Esperar;
-unsigned char datosAcelerometro[50] = {0}, datos_enviar[100] = {0};
+unsigned char contador=0, vdatosRX[20] = {'\0'}, bandera = 0, estado = ESPERAR, numero_datos = 0;
+unsigned char vdatosAcelerometro[50] = {0}, vdatos_enviar[100] = {0};
 
 
 void ConfigIni(void);
@@ -49,7 +50,10 @@ void ConfigurarPines(void);
 void ConfigurarI2C(void);
 void ConfigurarGiroscopio();
 void ConfigurarRS232();
-unsigned char eClasificarTrama(unsigned char *datos); //devuelte la trama a utilizar
+unsigned char obtenerTrama();
+void eClasificarTrama(unsigned char trama, unsigned char *estado);
+void eTransmitirDatos();
+
 
 void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(){
     unsigned char datoRX = U1RXREG;
@@ -59,7 +63,7 @@ void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(){
         contador = 0;
     }
     else{
-        datosRX[contador] = datoRX;
+        vdatosRX[contador] = datoRX;
         contador++;
     }
     
@@ -73,32 +77,33 @@ int main(void)
     ConfigurarPines();
     ConfigurarRS232();
     ConfigurarGiroscopio();
-    unsigned char ID = 0;
+    unsigned char ID = 0, trama = 0;
     
    
     while(1){
         if(bandera == 1){
             bandera = 0;
-            recibirDatos(datosAcelerometro , 2, 0x01, ACELEROMETRO);
-             U1TXREG = datosAcelerometro[0];
+            recibirDatos(vdatosAcelerometro , 2, 0x01, ACELEROMETRO);
+             U1TXREG = vdatosAcelerometro[0];
              __delay_ms(20);
-             U1TXREG = datosAcelerometro[1];
+             U1TXREG = vdatosAcelerometro[1];
         }
         switch(estado){
-            case Esperar:
+            case ESPERAR:
                 
                 break;
-            case Clasificar: //Otra maquina de estados
-                
+            case CLASIFICAR: //Otra maquina de estados
+                trama = obtenerTrama();
+                eClasificarTrama();
                 break;
-            case Transmitir:
-                
+            case TRANSMITIR:
+                eTransmitirDatos();
                 break;
-            case Acelerometro:
+            case DATOSACELEROMETRO:
                 
                 break;
             default:
-                estado = Esperar;
+                estado = ESPERAR;
         }
         
         
@@ -168,3 +173,58 @@ void ConfigurarRS232(){
     IFS0bits.U1RXIF = 0;
 
 }
+
+unsigned char obtenerTrama(){
+    unsigned char datos[50] = {0};
+    obtenerDatos(vdatosRX, datos);
+    return datos[0]; //depende de orden
+}
+
+void eClasificarTrama(unsigned char trama, unsigned char *estado){
+    switch(trama){
+        case TODOSREGISTROS:
+            recibirDatos(vdatosAcelerometro, cALL, 0x00, ACELEROMETRO);
+            numero_datos = cALL;
+            estado[0] = TRANSMITIR;
+            break;
+            
+        case ACELERACIONES:
+            recibirDatos(vdatosAcelerometro, 6, 0x00, ACELEROMETRO);
+            numero_datos = 6;
+            estado[0] = TRANSMITIR;
+            break;      
+            
+        case GUARDARDATO:
+            
+            break;
+            
+        case CONFIGURARFIFO:
+            
+            break;
+            
+        case INICIOCOMUNICACIONCONTINUA:
+            
+            break;
+            
+        case DETENERTCOMUNIACIONCONTINUA:
+            
+            break;
+            
+        case ENCENDERLED:
+            
+            break;
+            
+        case APAGARLED:
+            
+            break;
+            
+        case TAPDETECTIONON:
+            
+            break;
+            
+        case TAPDETECTIONOFF:
+            
+            break;
+    }
+}
+
