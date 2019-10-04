@@ -18,7 +18,7 @@ _FWDT(FWDTEN_OFF);
 #define DIRECCION_ID 0x0D
 #define TX 0xFD
 #define RX 0xFE
-
+#define LED PORTBbits.RB0
 
 enum Estados{
     ESPERAR,
@@ -43,7 +43,7 @@ enum Tramas{
 
 
 unsigned char contador=0, vdatosRX[20] = {'\0'}, bandera = 0, estado = ESPERAR, numero_datos = 0;
-unsigned char vcomunicacionAcelerometro[4] = {0};
+unsigned char vcomunicacionAcelerometro[4] = {0}, contadorComunicacionContinua = 0;
 
 
 void ConfigIni(void);
@@ -53,30 +53,58 @@ void ConfigurarGiroscopio();
 void ConfigurarRS232();
 void ConfigurarTMR();
 void ConfigurarFIFO();
+
 void eClasificarTrama(unsigned char *vdatos, unsigned char trama);
 void eTransmitirDatos();
-void eComunicar(unsigned char *estado);
+void eComunicar();
+void eEstadoSiguienteComunicacion();
+
 void aComunicacion(unsigned char *datos);
 void aTransmitirDatos(unsigned char *datos);
+void aCambiarLed(unsigned char value);
+void aComunicacionContinua();
+
 void leerRegistros(unsigned char *datos);
+
+void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(){
+    IFS0bits.T3IF = 0;
+    if(vdatosRX[1] == contador){
+        estado = CLASIFICAR;
+        contador = 0;
+
+    }
+    T3CONbits.TON = 0;
+}
+
+void __attribute__((interrupt, no_auto_psv)) _T5Interrupt(){
+    TMR5 = 0x000;
+    IFS1bits.T5IF = 0;
+    if(contadorComunicacionContinua == 20){
+        estado = DATOSACELEROMETRO;
+        contadorComunicacionContinua = 0;
+    }
+    else{
+        contadorComunicacionContinua++;
+    }
+}
+
+
 
 void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(){
     unsigned char datoRX = U1RXREG;
     IFS0bits.U1RXIF = 0;
+    TMR3 = 0x0000;
+    T3CONbits.TON = 1;
+
     if(datoRX == TX){
         contador = 1;
         vdatosRX[0] = TX;
     }
     else{
         vdatosRX[contador] = datoRX;
-        
         contador++;
-        if(vdatosRX[1] == contador){
-            estado = CLASIFICAR;
-            contador = 0;
-        }
     }
-    
+    //tengo 1byte cada 420uS
 }
 
 
@@ -86,6 +114,7 @@ int main(void)
     ConfigurarI2C();
     ConfigurarPines();
     ConfigurarRS232();
+    ConfigurarTMR();
     ConfigurarGiroscopio();
     unsigned char ID = 0, trama = 0;
     unsigned char vdatos[60] = {0}, vdatos_enviar[70] = {0};
@@ -107,11 +136,11 @@ int main(void)
                 break;
             case DATOSACELEROMETRO:
                 aComunicacion(vdatos);
-                eComunicar(&estado);
+                eComunicar();
                 break;
             case COMUNICACIONCONTINUA:
-                
-                
+                aComunicacionContinua();
+                eEstadoSiguienteComunicacion();
                 break;
             default:
                 estado = ESPERAR;
@@ -144,6 +173,7 @@ void ConfigIni (void) {
 void ConfigurarPines(){
     AD1PCFGL=0xFFFF;
     ADPCFG = 0xFFFF;
+    TRISBbits.TRISB0=0; // LED
 }
 
 void ConfigurarI2C(void){ //TABLE 10.1 acelerometro
@@ -186,7 +216,22 @@ void ConfigurarRS232(){
 }
 
 void ConfigurarFIFO(){
+    trasmirDatos(0x80, 1, 0x09, ACELEROMETRO);
+    trasmirDatos(0x40, 1, 0x2D, ACELEROMETRO);
+}
+
+void ConfigurarTMR(){
+    //TIMER VERIFICACION
+    PR3 = 0x41A0;
+    TMR3 = 0x0000;
+    IFS0bits.T3IF = 0;
+    IEC0bits.T3IE = 1;
     
+    //TIMER COMUNICACION CONTINUA
+    PR5 = 0x9C40;
+    TMR5 = 0x000;
+    IFS1bits.T5IF = 0;
+    IEC1bits.T5IE = 1;
 }
 
 void eClasificarTrama(unsigned char *vdatos, unsigned char trama){
@@ -207,11 +252,10 @@ void eClasificarTrama(unsigned char *vdatos, unsigned char trama){
         case GUARDARDATO:
             vcomunicacionAcelerometro[0] = WRITE;
             vcomunicacionAcelerometro[1] = 1;
-            vcomunicacionAcelerometro[2] = vdatos[0];
-            vdatos[0] = vdatos[1];
+            vcomunicacionAcelerometro[2] = vdatos[1];           
             break;
             
-        case CONFIGURARFIFO:
+        case CONFIGURARFIFO: //FALTA TERMINAR
             ConfigurarFIFO();
             estado = ESPERAR;
             break;
@@ -224,23 +268,23 @@ void eClasificarTrama(unsigned char *vdatos, unsigned char trama){
             estado = COMUNICACIONCONTINUA;
             break;
             
-        case ENCENDERLED:
-            
+        case ENCENDERLED: 
+            aCambiarLed(1);
             estado = ESPERAR;
             break;
             
         case APAGARLED:
-            
+            aCambiarLed(0);
             estado = ESPERAR;
             break;
             
-        case TAPDETECTIONON:
+        case TAPDETECTIONON: //FALTA TERMINAR
             vcomunicacionAcelerometro[0] = WRITE;
             vcomunicacionAcelerometro[1] = 0x00;
             vcomunicacionAcelerometro[2] = 0x00;
             break;
             
-        case TAPDETECTIONOFF:
+        case TAPDETECTIONOFF: //FALTA TERMINAR
             vcomunicacionAcelerometro[0] = WRITE;
             vcomunicacionAcelerometro[1] = 0x00;
             vcomunicacionAcelerometro[2] = 0x00;
@@ -252,22 +296,25 @@ void eTransmitirDatos(){
     estado = ESPERAR;
 }
 
-void eComunicar(unsigned char *estado){
+void eComunicar(){
     switch(vcomunicacionAcelerometro[0]){
         case READ:
-            estado[0] = TRANSMITIR;
+            estado = TRANSMITIR;
             break;
         case WRITE:
-            estado[0] = ESPERAR;
+            estado = ESPERAR;
             break;
     }
+}
+
+void eEstadoSiguienteComunicacion(){
+    estado = ESPERAR;
 }
 
 void aComunicacion(unsigned char *datos){
     switch(vcomunicacionAcelerometro[0]){
         case READ:
-            leerRegistros(datos);
-           
+            leerRegistros(datos);          
             break;
         case WRITE:
             trasmirDatos(datos, vcomunicacionAcelerometro[1], vcomunicacionAcelerometro[2], ACELEROMETRO);
@@ -283,16 +330,27 @@ void aTransmitirDatos(unsigned char *datos){
     }
 }
 
+void aComunicacionContinua(){
+    if(T5CONbits.TON == 1){
+        T5CONbits.TON = 0;
+    }
+    else{
+        TMR5 = 0x0000;
+        contadorComunicacionContinua = 0;
+        T5CONbits.TON = 1;
+        vcomunicacionAcelerometro[0] = READ;
+        vcomunicacionAcelerometro[1] = 6;
+        vcomunicacionAcelerometro[2] = 0x01;
+    }
+}
+
 void leerRegistros(unsigned char *datos){
     if(vcomunicacionAcelerometro[1] == cALL){
         U1TXREG = 0x33;
         unsigned char aux[8] = {0}, aux_2[17] = {0}, aux_3[21] = {0};
         unsigned char i;
         recibirDatos(aux, 7, 0x00, ACELEROMETRO);
-
         recibirDatos(aux_2, 16, 0x09, ACELEROMETRO);
-    
-
         recibirDatos(aux_3, 20, 0x1D, ACELEROMETRO);
         for(i = 0; i<7; i++){
             datos[i] = aux[i];
@@ -303,11 +361,13 @@ void leerRegistros(unsigned char *datos){
         for(i=0; i<20; i++){
             datos[i + 29] = aux_3[i];
         }
-        
-
     }
     else{
         recibirDatos(datos, vcomunicacionAcelerometro[1], vcomunicacionAcelerometro[2], ACELEROMETRO);
 
     }
+}
+
+void aCambiarLed(unsigned char value){
+    LED = value;
 }
