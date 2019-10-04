@@ -249,7 +249,7 @@ void eClasificarTrama(unsigned char *vdatos, unsigned char trama){
             vcomunicacionAcelerometro[2] = 0x01;
             break;      
             
-        case GUARDARDATO:
+        case GUARDARDATO:  //FALTA TERMINAR
             vcomunicacionAcelerometro[0] = WRITE;
             vcomunicacionAcelerometro[1] = 1;
             vcomunicacionAcelerometro[2] = vdatos[1];           
@@ -326,7 +326,7 @@ void aTransmitirDatos(unsigned char *datos){
     unsigned char i;
     for(i=0; i<datos[1]; i++){
         U1TXREG = datos[i];
-        __delay_ms(20);
+        while(U1STAbits.UTXBF == 1);
     }
 }
 
