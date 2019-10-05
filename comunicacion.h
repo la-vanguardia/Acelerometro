@@ -15,7 +15,7 @@ void aCrearVectorEnviar(unsigned char codigo, unsigned char numero_datos, unsign
                 enviar[1] = numero_bytes;
                 break;
             case 2:
-                enviar[2] = orden; //Definir ORDEN
+                enviar[2] = orden; 
                 break;
             default:
                 enviar[i] = datos[i - 3];
