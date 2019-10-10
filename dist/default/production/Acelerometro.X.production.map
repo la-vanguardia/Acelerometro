@@ -58,11 +58,11 @@ xc16-ld 1.36 (B)
 
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
-.text                        0x200               0x194           0x25e  (606)
-.text                        0x394               0x728           0xabc  (2748)
-.dinit                       0xabc                 0xe            0x15  (21)
+.text                        0x200               0x22e           0x345  (837)
+.text                        0x42e               0x818           0xc24  (3108)
+.dinit                       0xc46                0x16            0x21  (33)
 
-                 Total "program" memory used (bytes):          0xd2f  (3375) 2%
+                 Total "program" memory used (bytes):          0xf8a  (3978) 3%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x2000]
@@ -70,9 +70,10 @@ section                    address   length (PC units)   length (bytes) (dec)
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
 .nbss                        0x800                   0             0xa  (10)
-.bss                         0x80a                   0           0x150  (336)
+.ndata                       0x80a                   0             0x2  (2)
+.bss                         0x80c                   0           0x156  (342)
 
-                 Total "data" memory used (bytes):          0x15a  (346) 4%
+                 Total "data" memory used (bytes):          0x162  (354) 4%
 
 
 Dynamic Memory Usage
@@ -80,9 +81,9 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x95a                              0x1ea6  (7846)
+stack                        0x962                              0x1e9e  (7838)
 
-                 Maximum dynamic memory (bytes):         0x1ea6  (7846)
+                 Maximum dynamic memory (bytes):         0x1e9e  (7838)
 
 
 External Symbols in Data Memory (by address):
@@ -96,10 +97,11 @@ External Symbols in Data Memory (by address):
                     0x0806                  _trama
                     0x0807                  _tiempo
                     0x0808                  _head
-                    0x080a                  _vdatosRX
-                    0x081e                  _vDatosFIFO
-                    0x08de                  _vDatosTAP
-                    0x0956                  _vInformacionAcelerometro
+                    0x080a                  _estado_interrupcion
+                    0x080c                  _vdatosRX
+                    0x0820                  _vFIFO
+                    0x08e4                  _vDatosTAP
+                    0x095e                  _vInformacionAcelerometro
 
 External Symbols in Data Memory (by name):
 
@@ -108,70 +110,76 @@ External Symbols in Data Memory (by name):
                     0x0804                  _contadorComunicacionContinua
                     0x0805                  _contadorTAP
                     0x0802                  _estado
+                    0x080a                  _estado_interrupcion
                     0x0808                  _head
                     0x0803                  _numero_datos
                     0x0807                  _tiempo
                     0x0806                  _trama
-                    0x081e                  _vDatosFIFO
-                    0x08de                  _vDatosTAP
-                    0x0956                  _vInformacionAcelerometro
-                    0x080a                  _vdatosRX
+                    0x08e4                  _vDatosTAP
+                    0x0820                  _vFIFO
+                    0x095e                  _vInformacionAcelerometro
+                    0x080c                  _vdatosRX
 
 External Symbols in Program Memory (by address):
 
                   0x000200                  __resetPRI
                   0x000230                  __psv_init
                   0x000240                  ___delay32
-                  0x000262                  __data_init
                   0x000262                  __data_init_standard
+                  0x000262                  __data_init
                   0x0002d8                  __T3Interrupt
                   0x0002f6                  __T5Interrupt
                   0x00032e                  __T2Interrupt
                   0x000350                  __U1RXInterrupt
-                  0x000390                  __DefaultInterrupt
-                  0x000394                  _iniciarComunicacion
-                  0x0003ac                  _trasmitirDato
-                  0x0003e6                  _trasmirDatos
-                  0x000424                  _recibirDato
-                  0x000454                  _recibirDatos
-                  0x0004b6                  _iniciarI2C
-                  0x0004c8                  _detenerI2C
-                  0x0004e8                  _resetearI2C
-                  0x0004fa                  _aCrearVectorEnviar
-                  0x00055c                  _aObtenerDatos
-                  0x00059e                  _main
-                  0x000646                  _ConfigIni
-                  0x0006a0                  _ConfigurarPines
-                  0x0006b0                  _ConfigurarI2C
-                  0x0006c2                  _ConfigurarGiroscopio
-                  0x0006e4                  _ConfigurarRS232
-                  0x000722                  _ConfigurarFIFO
-                  0x000746                  _ConfigurarTMR
-                  0x00076a                  _eClasificarTrama
-                  0x00081e                  _eTransmitirDatos
-                  0x000826                  _eComunicar
-                  0x000844                  _eEstadoSiguienteComunicacion
-                  0x00084c                  _aComunicacion
-                  0x0008f2                  _aTransmitirDatos
-                  0x000930                  _aComunicacionContinua
-                  0x00095e                  _leerRegistros
-                  0x000a0e                  _ConfigurarTapDetection
-                  0x000a6c                  _aCambiarLed
-                  0x000a84                  _EscrituraAcelerometro
-                  0x000aaa                  _leerID
+                  0x000390                  __INT1Interrupt
+                  0x00042a                  __DefaultInterrupt
+                  0x00042e                  _iniciarComunicacion
+                  0x000446                  _trasmitirDato
+                  0x000480                  _trasmirDatos
+                  0x0004be                  _recibirDato
+                  0x0004ee                  _recibirDatos
+                  0x000550                  _iniciarI2C
+                  0x000562                  _detenerI2C
+                  0x000582                  _resetearI2C
+                  0x000594                  _aCrearVectorEnviar
+                  0x0005f6                  _aObtenerDatos
+                  0x000638                  _main
+                  0x0006e4                  _ConfigIni
+                  0x00073e                  _ConfigurarPines
+                  0x00075c                  _ConfigurarI2C
+                  0x00076e                  _ConfigurarGiroscopio
+                  0x00079c                  _ConfigurarRS232
+                  0x0007da                  _ConfigurarFIFO
+                  0x0007fe                  _ConfigurarTMR
+                  0x000822                  _eClasificarTrama
+                  0x0008dc                  _eTransmitirDatos
+                  0x0008e4                  _eComunicar
+                  0x000902                  _eEstadoSiguienteComunicacion
+                  0x00090a                  _eTAP
+                  0x000912                  _aComunicacion
+                  0x0009b8                  _aTransmitirDatos
+                  0x0009f6                  _aComunicacionContinua
+                  0x000a24                  _leerRegistros
+                  0x000ad4                  _ConfigurarTapDetection
+                  0x000b32                  _aCambiarLed
+                  0x000b4a                  _aLeerFifo
+                  0x000bbe                  _aCargarTAP
+                  0x000c0e                  _EscrituraAcelerometro
+                  0x000c34                  _leerID
 
 External Symbols in Program Memory (by name):
 
-                  0x000646                  _ConfigIni
-                  0x000722                  _ConfigurarFIFO
-                  0x0006c2                  _ConfigurarGiroscopio
-                  0x0006b0                  _ConfigurarI2C
-                  0x0006a0                  _ConfigurarPines
-                  0x0006e4                  _ConfigurarRS232
-                  0x000746                  _ConfigurarTMR
-                  0x000a0e                  _ConfigurarTapDetection
-                  0x000a84                  _EscrituraAcelerometro
-                  0x000390                  __DefaultInterrupt
+                  0x0006e4                  _ConfigIni
+                  0x0007da                  _ConfigurarFIFO
+                  0x00076e                  _ConfigurarGiroscopio
+                  0x00075c                  _ConfigurarI2C
+                  0x00073e                  _ConfigurarPines
+                  0x00079c                  _ConfigurarRS232
+                  0x0007fe                  _ConfigurarTMR
+                  0x000ad4                  _ConfigurarTapDetection
+                  0x000c0e                  _EscrituraAcelerometro
+                  0x00042a                  __DefaultInterrupt
+                  0x000390                  __INT1Interrupt
                   0x00032e                  __T2Interrupt
                   0x0002d8                  __T3Interrupt
                   0x0002f6                  __T5Interrupt
@@ -181,27 +189,30 @@ External Symbols in Program Memory (by name):
                   0x000262                  __data_init_standard
                   0x000230                  __psv_init
                   0x000200                  __resetPRI
-                  0x000a6c                  _aCambiarLed
-                  0x00084c                  _aComunicacion
-                  0x000930                  _aComunicacionContinua
-                  0x0004fa                  _aCrearVectorEnviar
-                  0x00055c                  _aObtenerDatos
-                  0x0008f2                  _aTransmitirDatos
-                  0x0004c8                  _detenerI2C
-                  0x00076a                  _eClasificarTrama
-                  0x000826                  _eComunicar
-                  0x000844                  _eEstadoSiguienteComunicacion
-                  0x00081e                  _eTransmitirDatos
-                  0x000394                  _iniciarComunicacion
-                  0x0004b6                  _iniciarI2C
-                  0x000aaa                  _leerID
-                  0x00095e                  _leerRegistros
-                  0x00059e                  _main
-                  0x000424                  _recibirDato
-                  0x000454                  _recibirDatos
-                  0x0004e8                  _resetearI2C
-                  0x0003e6                  _trasmirDatos
-                  0x0003ac                  _trasmitirDato
+                  0x000b32                  _aCambiarLed
+                  0x000bbe                  _aCargarTAP
+                  0x000912                  _aComunicacion
+                  0x0009f6                  _aComunicacionContinua
+                  0x000594                  _aCrearVectorEnviar
+                  0x000b4a                  _aLeerFifo
+                  0x0005f6                  _aObtenerDatos
+                  0x0009b8                  _aTransmitirDatos
+                  0x000562                  _detenerI2C
+                  0x000822                  _eClasificarTrama
+                  0x0008e4                  _eComunicar
+                  0x000902                  _eEstadoSiguienteComunicacion
+                  0x00090a                  _eTAP
+                  0x0008dc                  _eTransmitirDatos
+                  0x00042e                  _iniciarComunicacion
+                  0x000550                  _iniciarI2C
+                  0x000c34                  _leerID
+                  0x000a24                  _leerRegistros
+                  0x000638                  _main
+                  0x0004be                  _recibirDato
+                  0x0004ee                  _recibirDatos
+                  0x000582                  _resetearI2C
+                  0x000480                  _trasmirDatos
+                  0x000446                  _trasmitirDato
 
 Memory Configuration
 
@@ -260,7 +271,7 @@ LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libfx-coff.a
                   0x000002          0x2 SHORT 0x0 ((ABSOLUTE (__reset) >> 0x10) & 0x7f)
                   0x000003          0x2 SHORT 0x0
 
-.text             0x000200        0x194
+.text             0x000200        0x22e
  *(.init)
  .init            0x000200         0x40 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(crt0_standard.o)
                   0x000200                  _resetPRI
@@ -274,13 +285,14 @@ LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libfx-coff.a
  *(.user_init)
  *(.handle)
  *(.isr*)
- .isr.text        0x0002d8         0xb8 build/default/production/main.o
+ .isr.text        0x0002d8        0x152 build/default/production/main.o
                   0x0002d8                  _T3Interrupt
                   0x0002f6                  _T5Interrupt
                   0x00032e                  _T2Interrupt
                   0x000350                  _U1RXInterrupt
- .isr             0x000390          0x4 default_isr
-                  0x000390                  _DefaultInterrupt
+                  0x000390                  _INT1Interrupt
+ .isr             0x00042a          0x4 default_isr
+                  0x00042a                  _DefaultInterrupt
  *(.libc)
  *(.libm)
  *(.libdsp)
@@ -1142,12 +1154,16 @@ __c30_signature
                     0x0807                  tiempo
                     0x0808                  head
 
-.bss                0x080a        0x150
- .bss               0x080a        0x150 build/default/production/main.o
-                    0x080a                  vdatosRX
-                    0x081e                  vDatosFIFO
-                    0x08de                  vDatosTAP
-                    0x0956                  vInformacionAcelerometro
+.ndata              0x080a          0x2
+ .ndata             0x080a          0x2 build/default/production/main.o
+                    0x080a                  estado_interrupcion
+
+.bss                0x080c        0x156
+ .bss               0x080c        0x156 build/default/production/main.o
+                    0x080c                  vdatosRX
+                    0x0820                  vFIFO
+                    0x08e4                  vDatosTAP
+                    0x095e                  vInformacionAcelerometro
 
 .config_ALTI2C    0xf8000c          0x2
  .config_ALTI2C
@@ -1173,38 +1189,46 @@ __c30_signature
  .ivt._U1RXInterrupt
                   0x00002a          0x2 build/default/production/main.o
 
-.text             0x000394        0x728
- .text            0x000394        0x728 build/default/production/main.o
-                  0x000394                  iniciarComunicacion
-                  0x0003ac                  trasmitirDato
-                  0x0003e6                  trasmirDatos
-                  0x000424                  recibirDato
-                  0x000454                  recibirDatos
-                  0x0004b6                  iniciarI2C
-                  0x0004c8                  detenerI2C
-                  0x0004e8                  resetearI2C
-                  0x0004fa                  aCrearVectorEnviar
-                  0x00055c                  aObtenerDatos
-                  0x00059e                  main
-                  0x000646                  ConfigIni
-                  0x0006a0                  ConfigurarPines
-                  0x0006b0                  ConfigurarI2C
-                  0x0006c2                  ConfigurarGiroscopio
-                  0x0006e4                  ConfigurarRS232
-                  0x000722                  ConfigurarFIFO
-                  0x000746                  ConfigurarTMR
-                  0x00076a                  eClasificarTrama
-                  0x00081e                  eTransmitirDatos
-                  0x000826                  eComunicar
-                  0x000844                  eEstadoSiguienteComunicacion
-                  0x00084c                  aComunicacion
-                  0x0008f2                  aTransmitirDatos
-                  0x000930                  aComunicacionContinua
-                  0x00095e                  leerRegistros
-                  0x000a0e                  ConfigurarTapDetection
-                  0x000a6c                  aCambiarLed
-                  0x000a84                  EscrituraAcelerometro
-                  0x000aaa                  leerID
+.ivt._INT1Interrupt
+                  0x00003c          0x2
+ .ivt._INT1Interrupt
+                  0x00003c          0x2 build/default/production/main.o
 
-.dinit            0x000abc          0xe
- .dinit           0x000abc          0xe data_init
+.text             0x00042e        0x818
+ .text            0x00042e        0x818 build/default/production/main.o
+                  0x00042e                  iniciarComunicacion
+                  0x000446                  trasmitirDato
+                  0x000480                  trasmirDatos
+                  0x0004be                  recibirDato
+                  0x0004ee                  recibirDatos
+                  0x000550                  iniciarI2C
+                  0x000562                  detenerI2C
+                  0x000582                  resetearI2C
+                  0x000594                  aCrearVectorEnviar
+                  0x0005f6                  aObtenerDatos
+                  0x000638                  main
+                  0x0006e4                  ConfigIni
+                  0x00073e                  ConfigurarPines
+                  0x00075c                  ConfigurarI2C
+                  0x00076e                  ConfigurarGiroscopio
+                  0x00079c                  ConfigurarRS232
+                  0x0007da                  ConfigurarFIFO
+                  0x0007fe                  ConfigurarTMR
+                  0x000822                  eClasificarTrama
+                  0x0008dc                  eTransmitirDatos
+                  0x0008e4                  eComunicar
+                  0x000902                  eEstadoSiguienteComunicacion
+                  0x00090a                  eTAP
+                  0x000912                  aComunicacion
+                  0x0009b8                  aTransmitirDatos
+                  0x0009f6                  aComunicacionContinua
+                  0x000a24                  leerRegistros
+                  0x000ad4                  ConfigurarTapDetection
+                  0x000b32                  aCambiarLed
+                  0x000b4a                  aLeerFifo
+                  0x000bbe                  aCargarTAP
+                  0x000c0e                  EscrituraAcelerometro
+                  0x000c34                  leerID
+
+.dinit            0x000c46         0x16
+ .dinit           0x000c46         0x16 data_init

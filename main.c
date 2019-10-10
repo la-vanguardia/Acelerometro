@@ -19,6 +19,8 @@ _FWDT(FWDTEN_OFF);
 #define TX 0xFD
 #define RX 0xFE
 #define LED PORTBbits.RB0
+#define ACTIVE 0x05
+#define SLEEP 0x04
 
 enum Estados{
     ESPERAR,
@@ -42,6 +44,12 @@ enum Tramas{
     TAPDETECTIONOFF
 };
 
+enum Interrupcion{
+    INTFIFO,
+    INTTAP,
+    INTNINGUNA
+};
+
 typedef struct comunicacionAcelerometro{
     unsigned char accion;
     unsigned char dirreccion;
@@ -51,8 +59,8 @@ typedef struct comunicacionAcelerometro{
 unsigned char contador=0, vdatosRX[20] = {'\0'}, bandera = 0, estado = ESPERAR, numero_datos = 0;
 unsigned char contadorComunicacionContinua = 0, contadorTAP = 0 ,trama = 0;
 unsigned char tiempo = 0;
-unsigned char vFIFO[195] = {0};
-unsigned char vDatosTAP[120] = {0}, head = 0;
+unsigned char vFIFO[196] = {0}, estado_interrupcion = INTNINGUNA;
+unsigned char vDatosTAP[121] = {0}, head = 0;
 comunicacion_t vInformacionAcelerometro;
 
 void ConfigIni(void);
@@ -137,6 +145,58 @@ void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(){
     T3CONbits.TON = 1;
 }
 
+void __attribute__((interrupt, no_auto_psv)) _INT1Interrupt(){
+    unsigned char valorInterrupcion;
+    IFS1bits.INT1IF = 0;
+    
+    /*
+     TAP 0x22
+     FIFO 0x00
+     */
+    
+    
+    
+    switch(estado_interrupcion){
+        case INTFIFO: //fifo
+
+            aLeerFifo();
+            aTransmitirDatos(vFIFO);
+            
+            iniciarI2C();
+            iniciarComunicacion(ACELEROMETRO, WRITE);
+            trasmitirDato(0x00);
+
+            resetearI2C();
+            iniciarComunicacion(ACELEROMETRO, READ);
+            valorInterrupcion = recibirDato(1);
+            
+            EscrituraAcelerometro(SLEEP, 0x2A);
+            EscrituraAcelerometro(0x00, 0x09);
+            EscrituraAcelerometro(0x00, 0x2D);
+            EscrituraAcelerometro(0x00, 0x2E);
+            EscrituraAcelerometro(ACTIVE, 0x2A);
+            estado_interrupcion = INTNINGUNA;
+            break;
+        case INTTAP: //TAP
+            
+            break;
+        case 0x44: //DOBLE INTERRUPCION
+            LED = 1;
+
+            aLeerFifo();
+            aTransmitirDatos(vFIFO);
+            iniciarI2C();
+            iniciarComunicacion(ACELEROMETRO, WRITE);
+            trasmitirDato(0x00);
+
+            resetearI2C();
+            iniciarComunicacion(ACELEROMETRO, READ);
+            valorInterrupcion = recibirDato(1);
+            break;
+    }
+    
+    estado = ESPERAR;
+}
 
 int main(void)
 {
@@ -159,10 +219,7 @@ int main(void)
     while(1){
         switch(estado & bandera){
             case ESPERAR:
-                if(PORTBbits.RB4 == 1){
-                    aLeerFifo();
-                    aTransmitirDatos(vFIFO);
-                }
+                
                 break;
             case CLASIFICAR: //Otra maquina de estados
                 aObtenerDatos(vdatosRX, vdatos, &trama);
@@ -182,7 +239,7 @@ int main(void)
                 eEstadoSiguienteComunicacion();
                 break;
             case TAP:
-                
+                aCargarTAP();
                 eTAP();
                 break;
             default:
@@ -217,6 +274,9 @@ void ConfigurarPines(){
     AD1PCFGL=0xFFFF;
     ADPCFG = 0xFFFF;
     TRISBbits.TRISB0=0; // LED
+    RPINR0bits.INT1R = 4;
+    IFS1bits.INT1IF = 0;
+    IEC1bits.INT1IE = 1;
 }
 
 void ConfigurarI2C(void){ //TABLE 10.1 acelerometro
@@ -232,9 +292,13 @@ void ConfigurarGiroscopio(){
     iniciarI2C();
     iniciarComunicacion(ACELEROMETRO, WRITE);
     trasmitirDato(0x2A);
-    trasmitirDato(0x01);
+    trasmitirDato(ACTIVE);
     I2C1CONbits.PEN = 1;
     while(I2C1CONbits.PEN == 1);
+    
+    EscrituraAcelerometro(0x10 ,0x0E);
+    EscrituraAcelerometro(0x22 ,0x0F);
+
 }
 
 void ConfigurarRS232(){
@@ -261,11 +325,11 @@ void ConfigurarRS232(){
 
 void ConfigurarFIFO(){
     
-    EscrituraAcelerometro(0x00, 0x2A);
+    EscrituraAcelerometro(SLEEP, 0x2A);
     EscrituraAcelerometro(0x80, 0x09);
     EscrituraAcelerometro(0x40, 0x2D);
     EscrituraAcelerometro(0x40, 0x2E);
-    EscrituraAcelerometro(0x01, 0x2A);
+    EscrituraAcelerometro(ACTIVE, 0x2A);
 }
 
 void ConfigurarTMR(){
@@ -313,6 +377,7 @@ void eClasificarTrama(unsigned char *vdatos, unsigned char trama){
             
         case CONFIGURARFIFO: //FALTA TERMINAR
             ConfigurarFIFO();
+            estado_interrupcion = INTFIFO;
             estado = ESPERAR;
             break;
             
@@ -335,6 +400,7 @@ void eClasificarTrama(unsigned char *vdatos, unsigned char trama){
             break;
             
         case TAPDETECTIONON: //FALTA TERMINAR
+            estado_interrupcion = INTTAP;
             ConfigurarTapDetection(1);
             estado = ESPERAR;
             break;
@@ -395,9 +461,9 @@ void aComunicacion(unsigned char *datos){
             }
             break;
         case WRITE:
-            EscrituraAcelerometro(0x00, 0x2A);
+            EscrituraAcelerometro(SLEEP, 0x2A);
             trasmirDatos(datos, vInformacionAcelerometro.numero_datos, vInformacionAcelerometro.dirreccion, ACELEROMETRO);
-            EscrituraAcelerometro(0x01, 0x2A);
+            EscrituraAcelerometro(ACTIVE, 0x2A);
             break;
     }
 }
@@ -454,7 +520,7 @@ void leerRegistros(unsigned char *datos){
 void ConfigurarTapDetection(unsigned char on){
     if(on == 1){
                 
-        EscrituraAcelerometro(0x00, 0x2A);
+        EscrituraAcelerometro(SLEEP, 0x2A);
         EscrituraAcelerometro(0x15, 0x21);
      
         EscrituraAcelerometro(0x0C, 0x23);
@@ -467,12 +533,12 @@ void ConfigurarTapDetection(unsigned char on){
         EscrituraAcelerometro(0x08, 0x2D);
         EscrituraAcelerometro(0x08, 0x2E);
         
-        EscrituraAcelerometro(0x01, 0x2A);
+        EscrituraAcelerometro(ACTIVE, 0x2A);
     }
     else{
-        EscrituraAcelerometro(0x00, 0x2A);
+        EscrituraAcelerometro(SLEEP, 0x2A);
         EscrituraAcelerometro(0x00, 0x2D);
-        EscrituraAcelerometro(0x01, 0x2A);
+        EscrituraAcelerometro(ACTIVE, 0x2A);
     }
 }
 
@@ -489,7 +555,7 @@ void aLeerFifo(){
         vInformacionAcelerometro.dirreccion = 0x01;
         leerRegistros(aux);
         for(j=0; j<6; j++){
-            vDatosFifo[ 6*j + i ] = aux[j];
+            vDatosFifo[ 6*i + j ] = aux[j];
         }
     }
     aCrearVectorEnviar(RX,  192, CONFIGURARFIFO, vDatosFifo, vFIFO);
