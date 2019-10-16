@@ -6,7 +6,7 @@
 
 void iniciarComunicacion(unsigned char codigo_familia, unsigned char read); //read=1 r, read=0 w
 void trasmitirDato(unsigned char dato);
-void trasmitirDatos(unsigned char *datos, unsigned char numero_datos, unsigned char dirreccion, unsigned char codigo_familia);
+void trasmirDatos(unsigned char *datos, unsigned char numero_datos, unsigned char dirreccion, unsigned char codigo_familia);
 unsigned char recibirDato(unsigned char detener);
 void recibirDatos(unsigned char *datos, unsigned char numero_datos, unsigned char dirreccion, unsigned char codigo_familia);
 void resetearI2C();
@@ -24,10 +24,11 @@ void trasmitirDato(unsigned char dato){
     IFS1bits.MI2C1IF = 0; //bajo la bandera
     
     I2C1TRN = dato; //envio el dato
-
     while(I2C1STATbits.ACKSTAT == 1); //espero que baje el ackstat
     while(IFS1bits.MI2C1IF == 1); //
     while(I2C1STATbits.TRSTAT == 1); //espero al tr
+
+
 }
 
 void trasmirDatos(unsigned char *datos, unsigned char numero_datos, unsigned char dirreccion, unsigned char codigo_familia){
@@ -38,7 +39,8 @@ void trasmirDatos(unsigned char *datos, unsigned char numero_datos, unsigned cha
     for(i=0; i<numero_datos; i++){
         trasmitirDato( datos[i] );
     }
-    detenerI2C();
+    I2C1CONbits.PEN = 1;
+    while(I2C1CONbits.PEN == 1);
 }
 
 unsigned char recibirDato(unsigned char detener){
@@ -95,7 +97,7 @@ void detenerI2C(){
     I2C1CONbits.ACKEN = 1; // habilitador ACK
     while(I2C1CONbits.ACKEN == 1);
     I2C1CONbits.PEN = 1;
-
+    while(I2C1CONbits.PEN == 1);
 }
 
 void resetearI2C(){
