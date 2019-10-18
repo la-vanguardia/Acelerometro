@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project>
-  <executable name="dist/default/production/Acelerometro.production.cof">
+  <executable name="dist/default/production/Acelerometro.X.production.cof">
     <memory name="data">
       <units>bytes</units>
       <length>8192</length>
-<<<<<<< HEAD
-      <used>74</used>
-      <free>8118</free>
-=======
       <used>158</used>
       <free>8034</free>
->>>>>>> comunicacion
     </memory>
     <memory name="program">
       <units>bytes</units>
       <length>131328</length>
-<<<<<<< HEAD
-      <used>1377</used>
-      <free>129951</free>
-=======
-      <used>3768</used>
-      <free>127560</free>
->>>>>>> comunicacion
+      <used>3777</used>
+      <free>127551</free>
     </memory>
   </executable>
 </project>

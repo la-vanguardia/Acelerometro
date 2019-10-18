@@ -68,9 +68,8 @@ void ConfigurarPines(void);
 void ConfigurarI2C(void);
 void ConfigurarGiroscopio();
 void ConfigurarRS232();
-<<<<<<< HEAD
-void EnviarRS232 ( unsigned char *text);
-=======
+
+
 void ConfigurarTMR();
 void ConfigurarFIFO();
 
@@ -128,23 +127,19 @@ void __attribute__((interrupt, no_auto_psv)) _T2Interrupt(){
         contadorTAP++;
     }
 }
->>>>>>> comunicacion
+
 
 void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(){
     unsigned char datoRX = U1RXREG;
     IFS0bits.U1RXIF = 0;
-<<<<<<< HEAD
-    if(datoRX == 0x0D){  //0x0D Finaliza el mensaje
-        bandera = 1;
-        contador = 0;
-=======
+    
     TMR3 = 0x0000;
     if( contador == 0){
         if(datoRX == TX){
            contador = 1;
            vdatosRX[0] = TX; 
         }    
->>>>>>> comunicacion
+
     }
     else{
         vdatosRX[contador] = datoRX;
@@ -163,21 +158,6 @@ int main(void)
     ConfigurarI2C();
     ConfigurarPines();
     ConfigurarRS232();
-<<<<<<< HEAD
-    ConfigurarGiroscopio();
-    U1TXREG = 'H';
-   
-    while(1){
-        if(bandera == 1){
-            bandera = 0;
-            recibirDatos(datosAcelerometro , 2, 0x01, ACELEROMETRO);
-          
-            EnviarRS232(datosAcelerometro);
-                    
-             /*U1TXREG = datosAcelerometro[0];
-             __delay_ms(20);
-             U1TXREG = datosAcelerometro[1];*/
-=======
     ConfigurarTMR();
     
     unsigned char ID = 0, ID_ans = 0;
@@ -235,7 +215,6 @@ int main(void)
                 break;
             default:
                 estado = ESPERAR;
->>>>>>> comunicacion
         }
         
         
@@ -280,28 +259,16 @@ void ConfigurarI2C(void){
 }
 
 void ConfigurarGiroscopio(){
-<<<<<<< HEAD
-    iniciarI2C();
-    iniciarComunicacion(ACELEROMETRO, WRITE);
-    trasmitirDato(0x2A); //Registro para despertar el acelerometro
-    trasmitirDato(0x09); //Active mode
-    detenerI2C();
-}
 
-void ConfigurarRS232(){
-   
-=======
     EscrituraAcelerometro(SLEEP, 0x2A);
     
     EscrituraAcelerometro(0x00, 0x2D); 
     EscrituraAcelerometro(ACTIVE, 0x2A);
-
 }
 
 void ConfigurarRS232(){
     
     IPC16bits.U1EIP = 0b110;
->>>>>>> comunicacion
     RPINR18bits.U1RXR = 0b01000;
     RPOR3bits.RP7R = 0b00011;
 
@@ -319,17 +286,6 @@ void ConfigurarRS232(){
 
 }
 
-<<<<<<< HEAD
-void EnviarRS232 ( unsigned char *text){
-    unsigned char i=0;
-    
-    for (i=0; i<Longitud;i++){
-        
-        U1TXREG = text[i];
-        __delay_ms(20);
-          
-    }   
-=======
 void ConfigurarFIFO(){
     
     EscrituraAcelerometro(SLEEP, 0x2A);
@@ -603,5 +559,4 @@ unsigned char leerID(){
     unsigned char ID;
     recibirDatos(&ID, 1, DIRECCION_ID, ACELEROMETRO);
     return ID;
->>>>>>> comunicacion
 }
