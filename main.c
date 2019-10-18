@@ -22,6 +22,8 @@ _FWDT(FWDTEN_OFF);
 #define ACTIVE 0x01
 #define SLEEP 0x00
 
+
+
 enum Estados{
     ESPERAR,
     CLASIFICAR,

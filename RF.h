@@ -4,6 +4,7 @@
 #define RFWRITE 0x20
 #define RFREAD 0x00
 #define Basura 0xFF
+#define SSRF PORTBbits.RB0
 //#define NOP 0xFF
 
 
@@ -35,13 +36,14 @@ void ConfigurarSPI(void){
 
 unsigned char TransferenciaSPI(unsigned char datoSPI){
     //Habilitar CS
-    
+    SSRF = 0;
     SPI1BUF = datoSPI;
     while(IFS0BITS.SPI1IF == 0); //Espero la bandera, se puede probar tambien con los buffer Tx o Rx 
     IFS0BITS.SPI1IF=0;
     return SPI1BUF;
     
     //Apagar CS
+    SSRF = 1;
 }
 
 unsigned char TransferenciaRF(unsigned char comandoSPI, unsigned char direccionSPI, unsigned char datoSPI){
