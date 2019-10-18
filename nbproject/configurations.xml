@@ -5,7 +5,11 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>I2C.h</itemPath>
+<<<<<<< HEAD
       <itemPath>comunicacion.h</itemPath>
+=======
+      <itemPath>RF.h</itemPath>
+>>>>>>> a616bd807fe691592d8f303e4617fd1541261599
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

@@ -60,9 +60,10 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 <<<<<<< HEAD:dist/default/production/Acelerometro.production.map
 .text                        0x200               0x10e           0x195  (405)
-.text                        0x30e               0x27a           0x3b7  (951)
-.dinit                       0x588                 0xe            0x15  (21)
+.text                        0x30e               0x276           0x3b1  (945)
+.dinit                       0x584                 0xe            0x15  (21)
 
+<<<<<<< HEAD
                  Total "program" memory used (bytes):          0x561  (1377) 1%
 =======
 .text                        0x200               0x194           0x25e  (606)
@@ -71,6 +72,9 @@ section                    address   length (PC units)   length (bytes) (dec)
 
                  Total "program" memory used (bytes):          0xeb8  (3768) 2%
 >>>>>>> comunicacion:dist/default/production/Acelerometro.X.production.map
+=======
+                 Total "program" memory used (bytes):          0x55b  (1371) 1%
+>>>>>>> a616bd807fe691592d8f303e4617fd1541261599
 
 
 "data" Memory  [Origin = 0x800, Length = 0x2000]
@@ -174,21 +178,21 @@ External Symbols in Program Memory (by address):
                   0x00043e                  _detenerI2C
                   0x000454                  _resetearI2C
                   0x000466                  _main
-                  0x000496                  _ConfigIni
-                  0x0004f0                  _ConfigurarPines
-                  0x0004fe                  _ConfigurarI2C
-                  0x000510                  _ConfigurarGiroscopio
-                  0x000528                  _ConfigurarRS232
-                  0x00055a                  _EnviarRS232
+                  0x000492                  _ConfigIni
+                  0x0004ec                  _ConfigurarPines
+                  0x0004fa                  _ConfigurarI2C
+                  0x00050c                  _ConfigurarGiroscopio
+                  0x000524                  _ConfigurarRS232
+                  0x000556                  _EnviarRS232
 
 External Symbols in Program Memory (by name):
 
-                  0x000496                  _ConfigIni
-                  0x000510                  _ConfigurarGiroscopio
-                  0x0004fe                  _ConfigurarI2C
-                  0x0004f0                  _ConfigurarPines
-                  0x000528                  _ConfigurarRS232
-                  0x00055a                  _EnviarRS232
+                  0x000492                  _ConfigIni
+                  0x00050c                  _ConfigurarGiroscopio
+                  0x0004fa                  _ConfigurarI2C
+                  0x0004ec                  _ConfigurarPines
+                  0x000524                  _ConfigurarRS232
+                  0x000556                  _EnviarRS232
                   0x00030a                  __DefaultInterrupt
                   0x0002d8                  __U1RXInterrupt
 =======
@@ -1276,9 +1280,14 @@ __c30_signature
  .ivt._U1RXInterrupt
                   0x00002a          0x2 build/default/production/main.o
 
+<<<<<<< HEAD
 <<<<<<< HEAD:dist/default/production/Acelerometro.production.map
 .text             0x00030e        0x27a
  .text            0x00030e        0x27a build/default/production/main.o
+=======
+.text             0x00030e        0x276
+ .text            0x00030e        0x276 build/default/production/main.o
+>>>>>>> a616bd807fe691592d8f303e4617fd1541261599
                   0x00030e                  iniciarComunicacion
                   0x000326                  trasmitirDato
                   0x000360                  trasmirDatos
@@ -1288,6 +1297,7 @@ __c30_signature
                   0x00043e                  detenerI2C
                   0x000454                  resetearI2C
                   0x000466                  main
+<<<<<<< HEAD
                   0x000496                  ConfigIni
                   0x0004f0                  ConfigurarPines
                   0x0004fe                  ConfigurarI2C
@@ -1337,3 +1347,14 @@ __c30_signature
 .dinit            0x000bba         0x16
  .dinit           0x000bba         0x16 data_init
 >>>>>>> comunicacion:dist/default/production/Acelerometro.X.production.map
+=======
+                  0x000492                  ConfigIni
+                  0x0004ec                  ConfigurarPines
+                  0x0004fa                  ConfigurarI2C
+                  0x00050c                  ConfigurarGiroscopio
+                  0x000524                  ConfigurarRS232
+                  0x000556                  EnviarRS232
+
+.dinit            0x000584          0xe
+ .dinit           0x000584          0xe data_init
+>>>>>>> a616bd807fe691592d8f303e4617fd1541261599

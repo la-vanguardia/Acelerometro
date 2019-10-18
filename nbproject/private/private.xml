@@ -3,7 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Lautaro%20Saez/Documents/Proyectos%20Progrmacion/PICS/Diseño%20con%20Micro/Acelerometro.X/main.c</file>
+=======
+            <file>file:/D:/Isaias/Documentos/Facultad/Diseño%20de%20Sistemas%20con%20Microcontroladores/Acelerometro/main.c</file>
+            <file>file:/D:/Isaias/Documentos/Facultad/Diseño%20de%20Sistemas%20con%20Microcontroladores/Acelerometro/RF.h</file>
+            <file>file:/D:/Isaias/Documentos/Facultad/Diseño%20de%20Sistemas%20con%20Microcontroladores/Acelerometro/I2C.h</file>
+>>>>>>> a616bd807fe691592d8f303e4617fd1541261599
         </group>
     </open-files>
 </project-private>
