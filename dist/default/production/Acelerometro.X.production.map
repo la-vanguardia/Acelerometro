@@ -50,6 +50,30 @@ c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff
                               build/default/production/main.o (__delay32)
 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(data_init_standard.o)
                               c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(crt0_standard.o) (_data_init_standard)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(sprintf_cdnopuxX.XXo)
+                              build/default/production/main.o (_sprintf_cdnopuxX)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(memcpy.XX_o)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(sprintf_cdnopuxX.XXo) (memcpy)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xprintf_cdnopuxX.XXo)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(sprintf_cdnopuxX.XXo) (__Printf_cdnopuxX)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xvacopy.XX_o)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xprintf_cdnopuxX.XXo) (_Vacopy)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(strchr.XX_o)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xprintf_cdnopuxX.XXo) (strchr)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xputfld_cdnopuxX.XXo)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xprintf_cdnopuxX.XXo) (__Putfld_cdnopuxX)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xputtxt.XX_o)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xprintf_cdnopuxX.XXo) (_Puttxt)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xlitob.XX_o)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xputfld_cdnopuxX.XXo) (_Litob)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(umodsi3.o)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xlitob.XX_o) (__umodsi3)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(udivsi3.o)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xlitob.XX_o) (__udivsi3)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(divsi3.o)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xlitob.XX_o) (__divsi3)
+c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(divmoddi3.o)
+                              c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xlitob.XX_o) (__udivdi3)
 
 
 xc16-ld 1.36 (B)
@@ -58,22 +82,24 @@ xc16-ld 1.36 (B)
 
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
-.text                        0x200               0x194           0x25e  (606)
-.text                        0x394               0x82c           0xc42  (3138)
-.dinit                       0xbc0                0x16            0x21  (33)
+.text                        0x200               0xbc6          0x11a9  (4521)
+.const                       0xdc6                0x1c            0x2a  (42)
+.text                        0xde2               0xa3a           0xf57  (3927)
+.dinit                      0x181c                0x4c            0x72  (114)
 
-                 Total "program" memory used (bytes):          0xec1  (3777) 2%
+                 Total "program" memory used (bytes):         0x219c  (8604) 6%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x2000]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0             0xa  (10)
-.ndata                       0x80a                   0             0x2  (2)
-.bss                         0x80c                   0            0x92  (146)
+.nbss                        0x800                   0            0x10  (16)
+.ndata                       0x810                   0             0x2  (2)
+.bss                         0x812                   0            0xc4  (196)
+.data                        0x8d6                   0            0x3c  (60)
 
-                 Total "data" memory used (bytes):           0x9e  (158) 1%
+                 Total "data" memory used (bytes):          0x112  (274) 3%
 
 
 Dynamic Memory Usage
@@ -81,136 +107,196 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x89e                              0x1f62  (8034)
+stack                        0x912                              0x1eee  (7918)
 
-                 Maximum dynamic memory (bytes):         0x1f62  (8034)
+                 Maximum dynamic memory (bytes):         0x1eee  (7918)
 
 
 External Symbols in Data Memory (by address):
 
                     0x0800                  _Longitud
-                    0x0801                  _contador
-                    0x0802                  _bandera
-                    0x0803                  _estado
-                    0x0804                  _numero_datos
-                    0x0805                  _contadorComunicacionContinua
-                    0x0806                  _contadorTAP
-                    0x0807                  _trama
-                    0x0808                  _tiempo
-                    0x0809                  _head
-                    0x080a                  _estado_interrupcion
-                    0x080c                  _vdatosRX
-                    0x0820                  _vDatosTAP
-                    0x089a                  _vInformacionAcelerometro
+                    0x0801                  _bandera_send
+                    0x0802                  _contador
+                    0x0803                  _bandera
+                    0x0804                  _estado
+                    0x0805                  _numero_datos
+                    0x0806                  _contadorComunicacionContinua
+                    0x0807                  _contadorTAP
+                    0x0808                  _trama
+                    0x0809                  _tiempo
+                    0x080a                  _head
+                    0x080b                  _bandera_dato
+                    0x080c                  _contadorU2
+                    0x080d                  _contador_t3
+                    0x080e                  _aux
+                    0x0810                  _estado_interrupcion
+                    0x0811                  _modo_trasmision
+                    0x0812                  _U2datos
+                    0x0844                  _vdatosRX
+                    0x0858                  _vDatosTAP
+                    0x08d2                  _vInformacionAcelerometro
 
 External Symbols in Data Memory (by name):
 
                     0x0800                  _Longitud
-                    0x0802                  _bandera
-                    0x0801                  _contador
-                    0x0805                  _contadorComunicacionContinua
-                    0x0806                  _contadorTAP
-                    0x0803                  _estado
-                    0x080a                  _estado_interrupcion
-                    0x0809                  _head
-                    0x0804                  _numero_datos
-                    0x0808                  _tiempo
-                    0x0807                  _trama
-                    0x0820                  _vDatosTAP
-                    0x089a                  _vInformacionAcelerometro
-                    0x080c                  _vdatosRX
+                    0x0812                  _U2datos
+                    0x080e                  _aux
+                    0x0803                  _bandera
+                    0x080b                  _bandera_dato
+                    0x0801                  _bandera_send
+                    0x0802                  _contador
+                    0x0806                  _contadorComunicacionContinua
+                    0x0807                  _contadorTAP
+                    0x080c                  _contadorU2
+                    0x080d                  _contador_t3
+                    0x0804                  _estado
+                    0x0810                  _estado_interrupcion
+                    0x080a                  _head
+                    0x0811                  _modo_trasmision
+                    0x0805                  _numero_datos
+                    0x0809                  _tiempo
+                    0x0808                  _trama
+                    0x0858                  _vDatosTAP
+                    0x08d2                  _vInformacionAcelerometro
+                    0x0844                  _vdatosRX
 
 External Symbols in Program Memory (by address):
 
                   0x000200                  __resetPRI
                   0x000230                  __psv_init
                   0x000240                  ___delay32
-                  0x000262                  __data_init_standard
                   0x000262                  __data_init
-                  0x0002d8                  __T3Interrupt
-                  0x0002f6                  __T5Interrupt
-                  0x00032e                  __T2Interrupt
-                  0x000350                  __U1RXInterrupt
-                  0x000390                  __DefaultInterrupt
-                  0x000394                  _iniciarComunicacion
-                  0x0003ac                  _trasmitirDato
-                  0x0003e6                  _trasmirDatos
-                  0x000424                  _recibirDato
-                  0x000454                  _recibirDatos
-                  0x0004bc                  _iniciarI2C
-                  0x0004ce                  _detenerI2C
-                  0x0004ee                  _resetearI2C
-                  0x000500                  _aCrearVectorEnviar
-                  0x000562                  _aObtenerDatos
-                  0x0005a4                  _main
-                  0x00069c                  _ConfigIni
-                  0x0006f6                  _ConfigurarPines
-                  0x000712                  _ConfigurarI2C
-                  0x000724                  _ConfigurarGiroscopio
-                  0x00073c                  _ConfigurarRS232
-                  0x00077a                  _ConfigurarFIFO
-                  0x00079e                  _ConfigurarTMR
-                  0x0007c2                  _eClasificarTrama
-                  0x00087c                  _eTransmitirDatos
-                  0x000884                  _eComunicar
-                  0x0008a2                  _eEstadoSiguienteComunicacion
-                  0x0008aa                  _eTAP
-                  0x0008b2                  _aComunicacion
-                  0x00091a                  _aTransmitirDatos
-                  0x000958                  _aComunicacionContinua
-                  0x000986                  _leerRegistros
-                  0x000a36                  _ConfigurarTapDetection
-                  0x000a94                  _aCambiarLed
-                  0x000aac                  _aLeerFifo
-                  0x000b38                  _aCargarTAP
-                  0x000b88                  _EscrituraAcelerometro
-                  0x000bae                  _leerID
+                  0x000262                  __data_init_standard
+                  0x0002dc                  __T3Interrupt
+                  0x0002fc                  __T5Interrupt
+                  0x000334                  __T2Interrupt
+                  0x000356                  __U1RXInterrupt
+                  0x000396                  __U2RXInterrupt
+                  0x0003e2                  __DefaultInterrupt
+                  0x0003e6                  sprintf_cdnopuxX.XXo:_prout
+                  0x0003f4                  __sprintf_cdnopuxX
+                  0x000412                  _memcpy
+                  0x000420                  ___Printf_cdnopuxX
+                  0x000584                  __Vacopy
+                  0x000588                  _strchr
+                  0x0005a0                  ___Putfld_cdnopuxX
+                  0x0007c4                  __Puttxt
+                  0x00093c                  __Litob
+                  0x000b9a                  ___umodsi3
+                  0x000ba0                  ___udivsi3
+                  0x000bc0                  ___divsi3
+                  0x000c1e                  ___udivmoddi3
+                  0x000cae                  ___udivdi3
+                  0x000cbc                  ___umoddi3
+                  0x000cc4                  ___divdi3
+                  0x000cf2                  ___moddi3
+                  0x000de2                  _iniciarComunicacion
+                  0x000dfa                  _trasmitirDato
+                  0x000e34                  _trasmirDatos
+                  0x000e72                  _recibirDato
+                  0x000ea2                  _recibirDatos
+                  0x000f0a                  _iniciarI2C
+                  0x000f1c                  _detenerI2C
+                  0x000f3c                  _resetearI2C
+                  0x000f4e                  _aCrearVectorEnviar
+                  0x000fb0                  _aObtenerDatos
+                  0x000ff2                  _ConfigurarWIFI
+                  0x00102c                  _enviarComando
+                  0x0010a2                  _enviarDato
+                  0x001100                  _longitudSTR
+                  0x001128                  _main
+                  0x00123a                  _ConfigIni
+                  0x001294                  _ConfigurarPines
+                  0x0012b0                  _ConfigurarI2C
+                  0x0012c2                  _ConfigurarGiroscopio
+                  0x0012da                  _ConfigurarRS232
+                  0x001318                  _ConfigurarFIFO
+                  0x00133c                  _ConfigurarTMR
+                  0x001360                  _eClasificarTrama
+                  0x001430                  _eTransmitirDatos
+                  0x001438                  _eComunicar
+                  0x001456                  _eEstadoSiguienteComunicacion
+                  0x00145e                  _eTAP
+                  0x001466                  _aComunicacion
+                  0x0014ce                  _aTransmitirDatos
+                  0x001524                  _aComunicacionContinua
+                  0x001552                  _leerRegistros
+                  0x001602                  _ConfigurarTapDetection
+                  0x001660                  _aCambiarLed
+                  0x001678                  _aLeerFifo
+                  0x001704                  _aLeerFifoWIFI
+                  0x001794                  _aCargarTAP
+                  0x0017e4                  _EscrituraAcelerometro
+                  0x00180a                  _leerID
 
 External Symbols in Program Memory (by name):
 
-                  0x00069c                  _ConfigIni
-                  0x00077a                  _ConfigurarFIFO
-                  0x000724                  _ConfigurarGiroscopio
-                  0x000712                  _ConfigurarI2C
-                  0x0006f6                  _ConfigurarPines
-                  0x00073c                  _ConfigurarRS232
-                  0x00079e                  _ConfigurarTMR
-                  0x000a36                  _ConfigurarTapDetection
-                  0x000b88                  _EscrituraAcelerometro
-                  0x000390                  __DefaultInterrupt
-                  0x00032e                  __T2Interrupt
-                  0x0002d8                  __T3Interrupt
-                  0x0002f6                  __T5Interrupt
-                  0x000350                  __U1RXInterrupt
+                  0x00123a                  _ConfigIni
+                  0x001318                  _ConfigurarFIFO
+                  0x0012c2                  _ConfigurarGiroscopio
+                  0x0012b0                  _ConfigurarI2C
+                  0x001294                  _ConfigurarPines
+                  0x0012da                  _ConfigurarRS232
+                  0x00133c                  _ConfigurarTMR
+                  0x001602                  _ConfigurarTapDetection
+                  0x000ff2                  _ConfigurarWIFI
+                  0x0017e4                  _EscrituraAcelerometro
+                  0x0003e2                  __DefaultInterrupt
+                  0x00093c                  __Litob
+                  0x0007c4                  __Puttxt
+                  0x000334                  __T2Interrupt
+                  0x0002dc                  __T3Interrupt
+                  0x0002fc                  __T5Interrupt
+                  0x000356                  __U1RXInterrupt
+                  0x000396                  __U2RXInterrupt
+                  0x000584                  __Vacopy
+                  0x000420                  ___Printf_cdnopuxX
+                  0x0005a0                  ___Putfld_cdnopuxX
                   0x000240                  ___delay32
+                  0x000cc4                  ___divdi3
+                  0x000bc0                  ___divsi3
+                  0x000cf2                  ___moddi3
+                  0x000cae                  ___udivdi3
+                  0x000c1e                  ___udivmoddi3
+                  0x000ba0                  ___udivsi3
+                  0x000cbc                  ___umoddi3
+                  0x000b9a                  ___umodsi3
                   0x000262                  __data_init
                   0x000262                  __data_init_standard
                   0x000230                  __psv_init
                   0x000200                  __resetPRI
-                  0x000a94                  _aCambiarLed
-                  0x000b38                  _aCargarTAP
-                  0x0008b2                  _aComunicacion
-                  0x000958                  _aComunicacionContinua
-                  0x000500                  _aCrearVectorEnviar
-                  0x000aac                  _aLeerFifo
-                  0x000562                  _aObtenerDatos
-                  0x00091a                  _aTransmitirDatos
-                  0x0004ce                  _detenerI2C
-                  0x0007c2                  _eClasificarTrama
-                  0x000884                  _eComunicar
-                  0x0008a2                  _eEstadoSiguienteComunicacion
-                  0x0008aa                  _eTAP
-                  0x00087c                  _eTransmitirDatos
-                  0x000394                  _iniciarComunicacion
-                  0x0004bc                  _iniciarI2C
-                  0x000bae                  _leerID
-                  0x000986                  _leerRegistros
-                  0x0005a4                  _main
-                  0x000424                  _recibirDato
-                  0x000454                  _recibirDatos
-                  0x0004ee                  _resetearI2C
-                  0x0003e6                  _trasmirDatos
-                  0x0003ac                  _trasmitirDato
+                  0x0003f4                  __sprintf_cdnopuxX
+                  0x001660                  _aCambiarLed
+                  0x001794                  _aCargarTAP
+                  0x001466                  _aComunicacion
+                  0x001524                  _aComunicacionContinua
+                  0x000f4e                  _aCrearVectorEnviar
+                  0x001678                  _aLeerFifo
+                  0x001704                  _aLeerFifoWIFI
+                  0x000fb0                  _aObtenerDatos
+                  0x0014ce                  _aTransmitirDatos
+                  0x000f1c                  _detenerI2C
+                  0x001360                  _eClasificarTrama
+                  0x001438                  _eComunicar
+                  0x001456                  _eEstadoSiguienteComunicacion
+                  0x00145e                  _eTAP
+                  0x001430                  _eTransmitirDatos
+                  0x00102c                  _enviarComando
+                  0x0010a2                  _enviarDato
+                  0x000de2                  _iniciarComunicacion
+                  0x000f0a                  _iniciarI2C
+                  0x00180a                  _leerID
+                  0x001552                  _leerRegistros
+                  0x001100                  _longitudSTR
+                  0x001128                  _main
+                  0x000412                  _memcpy
+                  0x000e72                  _recibirDato
+                  0x000ea2                  _recibirDatos
+                  0x000f3c                  _resetearI2C
+                  0x000588                  _strchr
+                  0x000e34                  _trasmirDatos
+                  0x000dfa                  _trasmitirDato
+                  0x0003e6                  sprintf_cdnopuxX.XXo:_prout
 
 Memory Configuration
 
@@ -269,7 +355,7 @@ LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libfx-coff.a
                   0x000002          0x2 SHORT 0x0 ((ABSOLUTE (__reset) >> 0x10) & 0x7f)
                   0x000003          0x2 SHORT 0x0
 
-.text             0x000200        0x194
+.text             0x000200        0xbc6
  *(.init)
  .init            0x000200         0x40 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(crt0_standard.o)
                   0x000200                  _resetPRI
@@ -282,16 +368,47 @@ LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libfx-coff.a
                   0x000262                  _data_init
  *(.user_init)
  *(.handle)
+ .handle          0x0002d8          0x4 jump_table
  *(.isr*)
- .isr.text        0x0002d8         0xb8 build/default/production/main.o
-                  0x0002d8                  _T3Interrupt
-                  0x0002f6                  _T5Interrupt
-                  0x00032e                  _T2Interrupt
-                  0x000350                  _U1RXInterrupt
- .isr             0x000390          0x4 default_isr
-                  0x000390                  _DefaultInterrupt
+ .isr.text        0x0002dc        0x106 build/default/production/main.o
+                  0x0002dc                  _T3Interrupt
+                  0x0002fc                  _T5Interrupt
+                  0x000334                  _T2Interrupt
+                  0x000356                  _U1RXInterrupt
+                  0x000396                  _U2RXInterrupt
+ .isr             0x0003e2          0x4 default_isr
+                  0x0003e2                  _DefaultInterrupt
  *(.libc)
+ .libc            0x0003e6         0x2c c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(sprintf_cdnopuxX.XXo)
+                  0x0003e6                  sprintf_cdnopuxX.XXo:_prout
+                  0x0003f4                  _sprintf_cdnopuxX
+ .libc            0x000412          0xe c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(memcpy.XX_o)
+                  0x000412                  memcpy
+ .libc            0x000420        0x164 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xprintf_cdnopuxX.XXo)
+                  0x000420                  __Printf_cdnopuxX
+ .libc            0x000584          0x4 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xvacopy.XX_o)
+                  0x000584                  _Vacopy
+ .libc            0x000588         0x18 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(strchr.XX_o)
+                  0x000588                  strchr
+ .libc            0x0005a0        0x224 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xputfld_cdnopuxX.XXo)
+                  0x0005a0                  __Putfld_cdnopuxX
+ .libc            0x0007c4        0x178 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xputtxt.XX_o)
+                  0x0007c4                  _Puttxt
+ .libc            0x00093c        0x25e c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xlitob.XX_o)
+                  0x00093c                  _Litob
  *(.libm)
+ .libm            0x000b9a          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(umodsi3.o)
+                  0x000b9a                  __umodsi3
+ .libm            0x000ba0         0x20 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(udivsi3.o)
+                  0x000ba0                  __udivsi3
+ .libm            0x000bc0         0x1e c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(divsi3.o)
+                  0x000bc0                  __divsi3
+ .libm            0x000bde        0x1e8 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(divmoddi3.o)
+                  0x000c1e                  __udivmoddi3
+                  0x000cae                  __udivdi3
+                  0x000cbc                  __umoddi3
+                  0x000cc4                  __divdi3
+                  0x000cf2                  __moddi3
  *(.libdsp)
  *(.lib*)
 
@@ -1125,11 +1242,12 @@ LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a
 LOAD c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a
 END GROUP
 OUTPUT(dist/default/production/Acelerometro.X.production.cof coff-pic30)
+LOAD jump_table
 LOAD data_init
 LOAD default_isr
 
 __c30_signature
-                  0x000000         0x18
+                  0x000000         0x60
  __c30_signature
                   0x000000          0x6 build/default/production/main.o
  __c30_signature
@@ -1138,29 +1256,64 @@ __c30_signature
                   0x00000c          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(delay32.Lo)
  __c30_signature
                   0x000012          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-pic30-coff.a(data_init_standard.o)
+ __c30_signature
+                  0x000018          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(sprintf_cdnopuxX.XXo)
+ __c30_signature
+                  0x00001e          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(memcpy.XX_o)
+ __c30_signature
+                  0x000024          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xprintf_cdnopuxX.XXo)
+ __c30_signature
+                  0x00002a          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xvacopy.XX_o)
+ __c30_signature
+                  0x000030          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(strchr.XX_o)
+ __c30_signature
+                  0x000036          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xputfld_cdnopuxX.XXo)
+ __c30_signature
+                  0x00003c          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xputtxt.XX_o)
+ __c30_signature
+                  0x000042          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xlitob.XX_o)
+ __c30_signature
+                  0x000048          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(umodsi3.o)
+ __c30_signature
+                  0x00004e          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(udivsi3.o)
+ __c30_signature
+                  0x000054          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(divsi3.o)
+ __c30_signature
+                  0x00005a          0x6 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\libm-coff.a(divmoddi3.o)
 
-.nbss               0x0800          0xa
- .nbss              0x0800          0xa build/default/production/main.o
+.nbss               0x0800         0x10
+ .nbss              0x0800         0x10 build/default/production/main.o
                     0x0800                  Longitud
-                    0x0801                  contador
-                    0x0802                  bandera
-                    0x0803                  estado
-                    0x0804                  numero_datos
-                    0x0805                  contadorComunicacionContinua
-                    0x0806                  contadorTAP
-                    0x0807                  trama
-                    0x0808                  tiempo
-                    0x0809                  head
+                    0x0801                  bandera_send
+                    0x0802                  contador
+                    0x0803                  bandera
+                    0x0804                  estado
+                    0x0805                  numero_datos
+                    0x0806                  contadorComunicacionContinua
+                    0x0807                  contadorTAP
+                    0x0808                  trama
+                    0x0809                  tiempo
+                    0x080a                  head
+                    0x080b                  bandera_dato
+                    0x080c                  contadorU2
+                    0x080d                  contador_t3
+                    0x080e                  aux
 
-.ndata              0x080a          0x2
- .ndata             0x080a          0x2 build/default/production/main.o
-                    0x080a                  estado_interrupcion
+.ndata              0x0810          0x2
+ .ndata             0x0810          0x2 build/default/production/main.o
+                    0x0810                  estado_interrupcion
+                    0x0811                  modo_trasmision
 
-.bss                0x080c         0x92
- .bss               0x080c         0x92 build/default/production/main.o
-                    0x080c                  vdatosRX
-                    0x0820                  vDatosTAP
-                    0x089a                  vInformacionAcelerometro
+.bss                0x0812         0xc4
+ .bss               0x0812         0xc4 build/default/production/main.o
+                    0x0812                  U2datos
+                    0x0844                  vdatosRX
+                    0x0858                  vDatosTAP
+                    0x08d2                  vInformacionAcelerometro
+
+.data               0x08d6         0x3c
+ .data              0x08d6         0x22 c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xlitob.XX_o)
+ .data              0x08f8         0x1a c:/program files (x86)/microchip/xc16/v1.36/bin/bin/../../lib\liblega-c-coff.a(xprintf_cdnopuxX.XXo)
 
 .config_ALTI2C    0xf8000c          0x2
  .config_ALTI2C
@@ -1186,41 +1339,54 @@ __c30_signature
  .ivt._U1RXInterrupt
                   0x00002a          0x2 build/default/production/main.o
 
-.text             0x000394        0x82c
- .text            0x000394        0x82c build/default/production/main.o
-                  0x000394                  iniciarComunicacion
-                  0x0003ac                  trasmitirDato
-                  0x0003e6                  trasmirDatos
-                  0x000424                  recibirDato
-                  0x000454                  recibirDatos
-                  0x0004bc                  iniciarI2C
-                  0x0004ce                  detenerI2C
-                  0x0004ee                  resetearI2C
-                  0x000500                  aCrearVectorEnviar
-                  0x000562                  aObtenerDatos
-                  0x0005a4                  main
-                  0x00069c                  ConfigIni
-                  0x0006f6                  ConfigurarPines
-                  0x000712                  ConfigurarI2C
-                  0x000724                  ConfigurarGiroscopio
-                  0x00073c                  ConfigurarRS232
-                  0x00077a                  ConfigurarFIFO
-                  0x00079e                  ConfigurarTMR
-                  0x0007c2                  eClasificarTrama
-                  0x00087c                  eTransmitirDatos
-                  0x000884                  eComunicar
-                  0x0008a2                  eEstadoSiguienteComunicacion
-                  0x0008aa                  eTAP
-                  0x0008b2                  aComunicacion
-                  0x00091a                  aTransmitirDatos
-                  0x000958                  aComunicacionContinua
-                  0x000986                  leerRegistros
-                  0x000a36                  ConfigurarTapDetection
-                  0x000a94                  aCambiarLed
-                  0x000aac                  aLeerFifo
-                  0x000b38                  aCargarTAP
-                  0x000b88                  EscrituraAcelerometro
-                  0x000bae                  leerID
+.ivt._U2RXInterrupt
+                  0x000050          0x2
+ .ivt._U2RXInterrupt
+                  0x000050          0x2 build/default/production/main.o
 
-.dinit            0x000bc0         0x16
- .dinit           0x000bc0         0x16 data_init
+.const              0x8dc6         0x1c load address 0x000dc6  
+ .const             0x8dc6         0x1c build/default/production/main.o
+
+.text             0x000de2        0xa3a
+ .text            0x000de2        0xa3a build/default/production/main.o
+                  0x000de2                  iniciarComunicacion
+                  0x000dfa                  trasmitirDato
+                  0x000e34                  trasmirDatos
+                  0x000e72                  recibirDato
+                  0x000ea2                  recibirDatos
+                  0x000f0a                  iniciarI2C
+                  0x000f1c                  detenerI2C
+                  0x000f3c                  resetearI2C
+                  0x000f4e                  aCrearVectorEnviar
+                  0x000fb0                  aObtenerDatos
+                  0x000ff2                  ConfigurarWIFI
+                  0x00102c                  enviarComando
+                  0x0010a2                  enviarDato
+                  0x001100                  longitudSTR
+                  0x001128                  main
+                  0x00123a                  ConfigIni
+                  0x001294                  ConfigurarPines
+                  0x0012b0                  ConfigurarI2C
+                  0x0012c2                  ConfigurarGiroscopio
+                  0x0012da                  ConfigurarRS232
+                  0x001318                  ConfigurarFIFO
+                  0x00133c                  ConfigurarTMR
+                  0x001360                  eClasificarTrama
+                  0x001430                  eTransmitirDatos
+                  0x001438                  eComunicar
+                  0x001456                  eEstadoSiguienteComunicacion
+                  0x00145e                  eTAP
+                  0x001466                  aComunicacion
+                  0x0014ce                  aTransmitirDatos
+                  0x001524                  aComunicacionContinua
+                  0x001552                  leerRegistros
+                  0x001602                  ConfigurarTapDetection
+                  0x001660                  aCambiarLed
+                  0x001678                  aLeerFifo
+                  0x001704                  aLeerFifoWIFI
+                  0x001794                  aCargarTAP
+                  0x0017e4                  EscrituraAcelerometro
+                  0x00180a                  leerID
+
+.dinit            0x00181c         0x4c
+ .dinit           0x00181c         0x4c data_init

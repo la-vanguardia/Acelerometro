@@ -10,9 +10,6 @@ _FOSC(FCKSM_CSECMD & OSCIOFNC_OFF & POSCMD_XT);
 _FWDT(FWDTEN_OFF);
 #pragma config ALTI2C=ON // uso los pines alternativos de i2c
 
-#include "I2C.h"
-#include "comunicacion.h"
-
 #define cALL 50
 #define ACELEROMETRO 0x1C
 #define DIRECCION_ID 0x0D
@@ -21,6 +18,13 @@ _FWDT(FWDTEN_OFF);
 #define LED PORTBbits.RB0
 #define ACTIVE 0x01
 #define SLEEP 0x00
+
+
+#include "I2C.h"
+#include "comunicacion.h"
+#include "WIFI.h"
+
+
 
 enum Estados{
     ESPERAR,
@@ -41,7 +45,15 @@ enum Tramas{
     ENCENDERLED,
     APAGARLED,
     TAPDETECTIONON,
-    TAPDETECTIONOFF
+    TAPDETECTIONOFF,
+    COMANDOWIFI, // 0x4B
+    SETEARMODO // 0x4C
+};
+
+enum Transmision{
+    WIFI,
+    NRF,
+    USB
 };
 
 enum Interrupcion{
@@ -59,9 +71,14 @@ typedef struct comunicacionAcelerometro{
 unsigned char contador=0, vdatosRX[20] = {'\0'}, bandera = 0, estado = ESPERAR, numero_datos = 0;
 unsigned char contadorComunicacionContinua = 0, contadorTAP = 0 ,trama = 0;
 unsigned char tiempo = 0;
-unsigned char estado_interrupcion = INTNINGUNA;
+unsigned char estado_interrupcion = INTNINGUNA, modo_trasmision = USB;
 unsigned char vDatosTAP[121] = {0}, head = 0;
+
+unsigned char bandera_dato = 0;
 comunicacion_t vInformacionAcelerometro;
+
+
+unsigned char  contadorU2 = 0, contador_t3, aux = 0;
 
 void ConfigIni(void);
 void ConfigurarPines(void);
@@ -85,6 +102,7 @@ void aCambiarLed(unsigned char value);
 void aComunicacionContinua();
 void aCargarTAP();
 void aLeerFifo();
+void aLeerFifoWIFI();
 
 void leerRegistros(unsigned char *datos);
 void ConfigurarTapDetection(unsigned char on);
@@ -93,11 +111,15 @@ unsigned char leerID();
 
 void __attribute__((interrupt, no_auto_psv)) _T3Interrupt(){
     IFS0bits.T3IF = 0;
+    unsigned char i;
     if(vdatosRX[1] == contador){
         estado = CLASIFICAR;
+        
+        
     }
     contador = 0;
     T3CONbits.TON = 0;
+    bandera_dato = 0;
 }
 
 void __attribute__((interrupt, no_auto_psv)) _T5Interrupt(){
@@ -126,6 +148,21 @@ void __attribute__((interrupt, no_auto_psv)) _T2Interrupt(){
     else{
         contadorTAP++;
     }
+    
+    /*unsigned char i;
+    contador_t3++;
+    if(contador_t3==20){
+    
+        for(i=0; i<contadorU2; i++){
+            
+            while(U1STAbits.UTXBF == 1);
+            U1TXREG = U2datos[i];
+        }
+        contadorU2 = 0;
+
+        T2CONbits.TON = 0;
+        contador_t3 == 0;
+    }*/
 }
 
 
@@ -145,9 +182,34 @@ void __attribute__((interrupt, no_auto_psv)) _U1RXInterrupt(){
         vdatosRX[contador] = datoRX;
         contador++;
     }
-    
     //tengo 1byte cada 420uS
     T3CONbits.TON = 1;
+    
+    
+    
+}
+
+void __attribute__((interrupt, no_auto_psv)) _U2RXInterrupt(){
+    unsigned char datoRX = U2RXREG, i;
+    IFS1bits.U2RXIF = 0;
+    T3CONbits.TON = 0;
+    TMR3 = 0x0000; 
+    
+    if(bandera_dato == 1){
+        vdatosRX[contador] = datoRX;
+        contador++;
+        T3CONbits.TON = 1;
+    }
+    
+    switch(datoRX){
+        case '>':
+            bandera_send = 1;
+            break;
+        case ':':
+            bandera_dato = 1;
+            contador=0;
+            break;
+    }
 }
 
 
@@ -159,6 +221,7 @@ int main(void)
     ConfigurarPines();
     ConfigurarRS232();
     ConfigurarTMR();
+    ConfigurarWIFI();
     
     unsigned char ID = 0, ID_ans = 0;
     unsigned char vdatos[60] = {0}, vdatos_enviar[70] = {0};
@@ -168,8 +231,8 @@ int main(void)
     if(ID == 0x1A){
         bandera = 0xFF;
         ConfigurarGiroscopio();
-
     }
+    
     while(1){
         switch(estado & bandera){
             case ESPERAR:
@@ -182,7 +245,17 @@ int main(void)
                 if(ID == 0xA0){
                     switch(estado_interrupcion){
                         case INTFIFO: //fifo
-                            aLeerFifo();
+                            switch(modo_trasmision){
+                                case WIFI:
+                                    aLeerFifoWIFI();
+                                    break;
+                                case USB:
+                                    aLeerFifo();
+                                    break;
+                                case NRF:
+                                    
+                                    break;
+                            }
                             
                             EscrituraAcelerometro(SLEEP, 0x2A);
                             EscrituraAcelerometro(0x00, 0x09);
@@ -273,7 +346,7 @@ void ConfigurarRS232(){
     RPOR3bits.RP7R = 0b00011;
 
     U1BRG = 129;
-    
+ 
     U1STAbits.UTXISEL1 = 1;
    
     U1MODEbits.UARTEN = 1; 
@@ -372,6 +445,14 @@ void eClasificarTrama(unsigned char *vdatos, unsigned char trama){
             ConfigurarTapDetection(0);
             estado = ESPERAR;
             break;
+        case COMANDOWIFI:
+            enviarComando(vdatos); //SE DEBE ENVIAR EL +
+            estado = ESPERAR;
+            break;
+        case SETEARMODO:
+            modo_trasmision = vdatos[0];
+            estado = ESPERAR;
+            break;
     }
 }
 
@@ -424,10 +505,23 @@ void aComunicacion(unsigned char *datos){
 
 void aTransmitirDatos(unsigned char *datos){
     unsigned char i;
-    for(i=0; i<datos[1]; i++){
-        U1TXREG = datos[i];
-        while(U1STAbits.UTXBF == 1);
+    
+    
+    
+    switch(modo_trasmision){
+        case WIFI:
+            enviarDato(datos);
+            break;
+        case NRF:
+            
+            break;
+        default:
+            for(i=0; i<datos[1]; i++){
+                U1TXREG = datos[i];
+                while(U1STAbits.UTXBF == 1);
+            }
     }
+    
     if( trama == INICIOCOMUNICACIONCONTINUA){
         T5CONbits.TON = 1;
     }
@@ -505,7 +599,7 @@ void aLeerFifo(){
     unsigned char aux = 0;
     U1TXREG = RX;
     while(U1STAbits.UTXBF == 1);
-    U1TXREG = 195;
+    U1TXREG= 195;
     while(U1STAbits.UTXBF == 1);
     U1TXREG = CONFIGURARFIFO;
     vInformacionAcelerometro.dirreccion = 0x01;
@@ -530,6 +624,39 @@ void aLeerFifo(){
     }
     detenerI2C();
 }
+
+void aLeerFifoWIFI(){
+    enviarComando("+CIPSEND=195");
+    unsigned char i;
+    unsigned char aux = 0;
+    U2TXREG = RX;
+    while(U2STAbits.UTXBF == 1);
+    U2TXREG = 195;
+    while(U2STAbits.UTXBF == 1);
+    U2TXREG = CONFIGURARFIFO;
+    vInformacionAcelerometro.dirreccion = 0x01;
+    iniciarI2C();
+    iniciarComunicacion(ACELEROMETRO, WRITE);
+    trasmitirDato(vInformacionAcelerometro.dirreccion);
+    
+    resetearI2C();
+    iniciarComunicacion(ACELEROMETRO, READ);
+    for(i=0; i<192; i++){
+       
+        aux = recibirDato(0);
+        if(i != (192 - 1) ){
+            I2C1CONbits.ACKDT = 0; // ACK
+            I2C1CONbits.ACKEN = 1; // habilitador ACK
+            while(I2C1CONbits.ACKEN == 1);
+        }
+        
+        while(U2STAbits.UTXBF == 1);
+        U2TXREG = aux;
+        
+    }
+    detenerI2C();
+}
+
 
 void aCargarTAP(){
     unsigned char aux[7] = {0}, i;
