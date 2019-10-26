@@ -1,6 +1,6 @@
 #define TX2 U2TXREG
 
-unsigned char U2datos[50] = {'\0'}, bandera_send = 0;;
+unsigned char U2datos[50] = {'\0'}, bandera_send = 0, bandera_ok = 0;
 
 void ConfigurarWIFI();
 void enviarComando(unsigned char* comando);
@@ -73,6 +73,9 @@ void enviarDato(unsigned char *mensaje){
         while(U2STAbits.UTXBF == 1);
         TX2 = mensaje[i];
     }
+    bandera_ok = 0;
+    while(bandera_ok == 0);
+    bandera_ok = 0;
 }
 
 unsigned char longitudSTR(unsigned char *A){

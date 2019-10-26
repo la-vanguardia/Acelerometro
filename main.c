@@ -147,22 +147,7 @@ void __attribute__((interrupt, no_auto_psv)) _T2Interrupt(){
     }
     else{
         contadorTAP++;
-    }
-    
-    /*unsigned char i;
-    contador_t3++;
-    if(contador_t3==20){
-    
-        for(i=0; i<contadorU2; i++){
-            
-            while(U1STAbits.UTXBF == 1);
-            U1TXREG = U2datos[i];
-        }
-        contadorU2 = 0;
-
-        T2CONbits.TON = 0;
-        contador_t3 == 0;
-    }*/
+    }   
 }
 
 
@@ -209,6 +194,9 @@ void __attribute__((interrupt, no_auto_psv)) _U2RXInterrupt(){
             bandera_dato = 1;
             contador=0;
             break;
+        case 'K':
+            bandera_ok = 1;
+            break;
     }
 }
 
@@ -236,7 +224,7 @@ int main(void)
     while(1){
         switch(estado & bandera){
             case ESPERAR:
-                iniciarI2C();
+                /*iniciarI2C();
                 iniciarComunicacion(ACELEROMETRO, WRITE);
                 trasmitirDato(0x00);
                 resetearI2C();
@@ -263,7 +251,7 @@ int main(void)
                             estado_interrupcion = INTNINGUNA;
                             break;
                     }
-                }
+                }*/
                 break;
             case CLASIFICAR: //Otra maquina de estados
                 aObtenerDatos(vdatosRX, vdatos, &trama);
@@ -505,9 +493,6 @@ void aComunicacion(unsigned char *datos){
 
 void aTransmitirDatos(unsigned char *datos){
     unsigned char i;
-    
-    
-    
     switch(modo_trasmision){
         case WIFI:
             enviarDato(datos);
@@ -629,6 +614,8 @@ void aLeerFifoWIFI(){
     enviarComando("+CIPSEND=195");
     unsigned char i;
     unsigned char aux = 0;
+    while(bandera_send == 0);
+    bandera_send = 0;
     U2TXREG = RX;
     while(U2STAbits.UTXBF == 1);
     U2TXREG = 195;
@@ -654,6 +641,7 @@ void aLeerFifoWIFI(){
         U2TXREG = aux;
         
     }
+    while(U2STAbits.UTXBF == 1);
     detenerI2C();
 }
 
