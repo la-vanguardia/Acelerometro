@@ -7,7 +7,10 @@
       <itemPath>I2C.h</itemPath>
       <itemPath>comunicacion.h</itemPath>
       <itemPath>RF.h</itemPath>
+<<<<<<< HEAD
       <itemPath>WIFI.h</itemPath>
+=======
+>>>>>>> 968e5b0e987907b824635c4b49dca51193c8b5b7
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"

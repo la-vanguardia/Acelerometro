@@ -12,8 +12,12 @@ unsigned char TransferenciaSPI (unsigned char datoSPI);
 unsigned char TransferenciaRF (unsigned char comandoSPI, unsigned char direccionSPI, unsigned char datoSPI);
 void ConfigurarRF (unsigned char direccionSPI, unsigned char datoSPI);
 void EnviarRF (unsigned char numero_bytes,unsigned char datoSPI);
+<<<<<<< HEAD
 unsigned char RecibirRF (unsigned char numero_bytes);
 
+=======
+void RecibirRF (unsigned char numero_bytes, unsigned char *datos);
+>>>>>>> 968e5b0e987907b824635c4b49dca51193c8b5b7
 
 
 void ConfigurarSPI(void){
@@ -101,20 +105,25 @@ void EnviarRF(unsigned char numero_bytes, unsigned char datoSPI){
  
 }
 
-unsigned char RecibirRF (unsigned char numero_bytes){
-    unsigned char status=0;
+void RecibirRF (unsigned char numero_bytes, unsigned char *datos){
+    unsigned char status=0, i = 0;
     unsigned char RFdato_leido=0;
 
     ConfigurarRF(0x00,0x01);
     TransferenciaRF(RFWRITE,0x11,numero_bytes); //Configurar cantidad de bytes a recibir
+    
+    
     status = TransferenciaRF(RFREAD,0x07,0);
-    if ((status && 0x10)== 1){  //Bandera de recepcion
+    while((status && 0x10)== 1){  //Bandera de recepcion
         //Habilitar CS
         TransferenciaSPI(0x61); //Comando para leer (VER)
-        RFdato_leido = TransferenciaSPI(Basura);
-  
+        datos[i] = TransferenciaSPI(Basura);
+        status = TransferenciaRF(RFREAD,0x07,0);
+        i++;
     }
 
-TransferenciaRF(RFWRITE,0x07,0x01);   //Baja la bandera 
+    
+    TransferenciaRF(RFWRITE,0x07,0x01);   //Baja la bandera 
     
 }
+
