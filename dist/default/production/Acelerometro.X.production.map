@@ -84,10 +84,10 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200               0xbd4          0x11be  (4542)
 .const                       0xdd4                0x1c            0x2a  (42)
-.text                        0xdf0               0x9fe           0xefd  (3837)
-.dinit                      0x17ee                0x4c            0x72  (114)
+.text                        0xdf0               0xa64           0xf96  (3990)
+.dinit                      0x1854                0x4c            0x72  (114)
 
-                 Total "program" memory used (bytes):         0x2157  (8535) 6%
+                 Total "program" memory used (bytes):         0x21f0  (8688) 6%
 
 
 "data" Memory  [Origin = 0x800, Length = 0x2000]
@@ -205,44 +205,45 @@ External Symbols in Program Memory (by address):
                   0x001000                  _ConfigurarWIFI
                   0x00103a                  _enviarComando
                   0x0010b0                  _enviarDato
-                  0x00111a                  _longitudSTR
-                  0x001142                  _main
-                  0x0011f6                  _ConfigIni
-                  0x001250                  _ConfigurarPines
-                  0x00126c                  _ConfigurarI2C
-                  0x00127e                  _ConfigurarGiroscopio
-                  0x001296                  _ConfigurarRS232
-                  0x0012d4                  _ConfigurarFIFO
-                  0x0012f8                  _ConfigurarTMR
-                  0x00131c                  _eClasificarTrama
-                  0x0013ec                  _eTransmitirDatos
-                  0x0013f4                  _eComunicar
-                  0x001412                  _eEstadoSiguienteComunicacion
-                  0x00141a                  _eTAP
-                  0x001422                  _aComunicacion
-                  0x00148a                  _aTransmitirDatos
-                  0x0014e0                  _aComunicacionContinua
-                  0x00150e                  _leerRegistros
-                  0x0015be                  _ConfigurarTapDetection
-                  0x00161c                  _aCambiarLed
-                  0x001634                  _aLeerFifo
-                  0x0016c0                  _aLeerFifoWIFI
-                  0x001766                  _aCargarTAP
-                  0x0017b6                  _EscrituraAcelerometro
-                  0x0017dc                  _leerID
+                  0x001110                  _longitudSTR
+                  0x001138                  _esperarBandera
+                  0x00114a                  _main
+                  0x00125c                  _ConfigIni
+                  0x0012b6                  _ConfigurarPines
+                  0x0012d2                  _ConfigurarI2C
+                  0x0012e4                  _ConfigurarGiroscopio
+                  0x0012fc                  _ConfigurarRS232
+                  0x00133a                  _ConfigurarFIFO
+                  0x00135e                  _ConfigurarTMR
+                  0x001382                  _eClasificarTrama
+                  0x001452                  _eTransmitirDatos
+                  0x00145a                  _eComunicar
+                  0x001478                  _eEstadoSiguienteComunicacion
+                  0x001480                  _eTAP
+                  0x001488                  _aComunicacion
+                  0x0014f0                  _aTransmitirDatos
+                  0x001546                  _aComunicacionContinua
+                  0x001574                  _leerRegistros
+                  0x001624                  _ConfigurarTapDetection
+                  0x001682                  _aCambiarLed
+                  0x00169a                  _aLeerFifo
+                  0x001726                  _aLeerFifoWIFI
+                  0x0017cc                  _aCargarTAP
+                  0x00181c                  _EscrituraAcelerometro
+                  0x001842                  _leerID
 
 External Symbols in Program Memory (by name):
 
-                  0x0011f6                  _ConfigIni
-                  0x0012d4                  _ConfigurarFIFO
-                  0x00127e                  _ConfigurarGiroscopio
-                  0x00126c                  _ConfigurarI2C
-                  0x001250                  _ConfigurarPines
-                  0x001296                  _ConfigurarRS232
-                  0x0012f8                  _ConfigurarTMR
-                  0x0015be                  _ConfigurarTapDetection
+                  0x00125c                  _ConfigIni
+                  0x00133a                  _ConfigurarFIFO
+                  0x0012e4                  _ConfigurarGiroscopio
+                  0x0012d2                  _ConfigurarI2C
+                  0x0012b6                  _ConfigurarPines
+                  0x0012fc                  _ConfigurarRS232
+                  0x00135e                  _ConfigurarTMR
+                  0x001624                  _ConfigurarTapDetection
                   0x001000                  _ConfigurarWIFI
-                  0x0017b6                  _EscrituraAcelerometro
+                  0x00181c                  _EscrituraAcelerometro
                   0x0003f0                  __DefaultInterrupt
                   0x00094a                  __Litob
                   0x0007d2                  __Puttxt
@@ -268,29 +269,30 @@ External Symbols in Program Memory (by name):
                   0x000230                  __psv_init
                   0x000200                  __resetPRI
                   0x000402                  __sprintf_cdnopuxX
-                  0x00161c                  _aCambiarLed
-                  0x001766                  _aCargarTAP
-                  0x001422                  _aComunicacion
-                  0x0014e0                  _aComunicacionContinua
+                  0x001682                  _aCambiarLed
+                  0x0017cc                  _aCargarTAP
+                  0x001488                  _aComunicacion
+                  0x001546                  _aComunicacionContinua
                   0x000f5c                  _aCrearVectorEnviar
-                  0x001634                  _aLeerFifo
-                  0x0016c0                  _aLeerFifoWIFI
+                  0x00169a                  _aLeerFifo
+                  0x001726                  _aLeerFifoWIFI
                   0x000fbe                  _aObtenerDatos
-                  0x00148a                  _aTransmitirDatos
+                  0x0014f0                  _aTransmitirDatos
                   0x000f2a                  _detenerI2C
-                  0x00131c                  _eClasificarTrama
-                  0x0013f4                  _eComunicar
-                  0x001412                  _eEstadoSiguienteComunicacion
-                  0x00141a                  _eTAP
-                  0x0013ec                  _eTransmitirDatos
+                  0x001382                  _eClasificarTrama
+                  0x00145a                  _eComunicar
+                  0x001478                  _eEstadoSiguienteComunicacion
+                  0x001480                  _eTAP
+                  0x001452                  _eTransmitirDatos
                   0x00103a                  _enviarComando
                   0x0010b0                  _enviarDato
+                  0x001138                  _esperarBandera
                   0x000df0                  _iniciarComunicacion
                   0x000f18                  _iniciarI2C
-                  0x0017dc                  _leerID
-                  0x00150e                  _leerRegistros
-                  0x00111a                  _longitudSTR
-                  0x001142                  _main
+                  0x001842                  _leerID
+                  0x001574                  _leerRegistros
+                  0x001110                  _longitudSTR
+                  0x00114a                  _main
                   0x000420                  _memcpy
                   0x000e80                  _recibirDato
                   0x000eb0                  _recibirDatos
@@ -1350,8 +1352,8 @@ __c30_signature
 .const              0x8dd4         0x1c load address 0x000dd4  
  .const             0x8dd4         0x1c build/default/production/main.o
 
-.text             0x000df0        0x9fe
- .text            0x000df0        0x9fe build/default/production/main.o
+.text             0x000df0        0xa64
+ .text            0x000df0        0xa64 build/default/production/main.o
                   0x000df0                  iniciarComunicacion
                   0x000e08                  trasmitirDato
                   0x000e42                  trasmirDatos
@@ -1365,31 +1367,32 @@ __c30_signature
                   0x001000                  ConfigurarWIFI
                   0x00103a                  enviarComando
                   0x0010b0                  enviarDato
-                  0x00111a                  longitudSTR
-                  0x001142                  main
-                  0x0011f6                  ConfigIni
-                  0x001250                  ConfigurarPines
-                  0x00126c                  ConfigurarI2C
-                  0x00127e                  ConfigurarGiroscopio
-                  0x001296                  ConfigurarRS232
-                  0x0012d4                  ConfigurarFIFO
-                  0x0012f8                  ConfigurarTMR
-                  0x00131c                  eClasificarTrama
-                  0x0013ec                  eTransmitirDatos
-                  0x0013f4                  eComunicar
-                  0x001412                  eEstadoSiguienteComunicacion
-                  0x00141a                  eTAP
-                  0x001422                  aComunicacion
-                  0x00148a                  aTransmitirDatos
-                  0x0014e0                  aComunicacionContinua
-                  0x00150e                  leerRegistros
-                  0x0015be                  ConfigurarTapDetection
-                  0x00161c                  aCambiarLed
-                  0x001634                  aLeerFifo
-                  0x0016c0                  aLeerFifoWIFI
-                  0x001766                  aCargarTAP
-                  0x0017b6                  EscrituraAcelerometro
-                  0x0017dc                  leerID
+                  0x001110                  longitudSTR
+                  0x001138                  esperarBandera
+                  0x00114a                  main
+                  0x00125c                  ConfigIni
+                  0x0012b6                  ConfigurarPines
+                  0x0012d2                  ConfigurarI2C
+                  0x0012e4                  ConfigurarGiroscopio
+                  0x0012fc                  ConfigurarRS232
+                  0x00133a                  ConfigurarFIFO
+                  0x00135e                  ConfigurarTMR
+                  0x001382                  eClasificarTrama
+                  0x001452                  eTransmitirDatos
+                  0x00145a                  eComunicar
+                  0x001478                  eEstadoSiguienteComunicacion
+                  0x001480                  eTAP
+                  0x001488                  aComunicacion
+                  0x0014f0                  aTransmitirDatos
+                  0x001546                  aComunicacionContinua
+                  0x001574                  leerRegistros
+                  0x001624                  ConfigurarTapDetection
+                  0x001682                  aCambiarLed
+                  0x00169a                  aLeerFifo
+                  0x001726                  aLeerFifoWIFI
+                  0x0017cc                  aCargarTAP
+                  0x00181c                  EscrituraAcelerometro
+                  0x001842                  leerID
 
-.dinit            0x0017ee         0x4c
- .dinit           0x0017ee         0x4c data_init
+.dinit            0x001854         0x4c
+ .dinit           0x001854         0x4c data_init

@@ -224,7 +224,7 @@ int main(void)
     while(1){
         switch(estado & bandera){
             case ESPERAR:
-                /*iniciarI2C();
+                iniciarI2C();
                 iniciarComunicacion(ACELEROMETRO, WRITE);
                 trasmitirDato(0x00);
                 resetearI2C();
@@ -251,7 +251,7 @@ int main(void)
                             estado_interrupcion = INTNINGUNA;
                             break;
                     }
-                }*/
+                }
                 break;
             case CLASIFICAR: //Otra maquina de estados
                 aObtenerDatos(vdatosRX, vdatos, &trama);

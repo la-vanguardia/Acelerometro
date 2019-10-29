@@ -1,11 +1,21 @@
+#include <string.h>
+
 #define TX2 U2TXREG
 
+/*
+ ISMA MODULO
+ * IP: 192.168.4.1
+ * PUERTO: 333
+ * RED: UNCO
+ * PASS: 1234567890
+ */
 unsigned char U2datos[50] = {'\0'}, bandera_send = 0, bandera_ok = 0;
 
 void ConfigurarWIFI();
 void enviarComando(unsigned char* comando);
 void enviarDato(unsigned char* mensaje);
 unsigned char longitudSTR(unsigned char *A);
+void esperarBandera();
 
 
 void ConfigurarWIFI(){
@@ -33,7 +43,6 @@ void ConfigurarWIFI(){
     
     enviarComando("E0");
     
-    
 
    
 }
@@ -56,7 +65,6 @@ void enviarComando(unsigned char *comando){
     TX2 = 0x0D;
     while(U2STAbits.UTXBF == 1);
     TX2 = 0x0A;
-   
 }
 
 void enviarDato(unsigned char *mensaje){
@@ -73,9 +81,8 @@ void enviarDato(unsigned char *mensaje){
         while(U2STAbits.UTXBF == 1);
         TX2 = mensaje[i];
     }
-    bandera_ok = 0;
-    while(bandera_ok == 0);
-    bandera_ok = 0;
+    
+    esperarBandera();
 }
 
 unsigned char longitudSTR(unsigned char *A){
@@ -85,5 +92,11 @@ unsigned char longitudSTR(unsigned char *A){
         i++;
     };
     return length;
+}
+
+void esperarBandera(){
+    bandera_ok = 0;
+    while(bandera_ok == 0);
+    bandera_ok = 0;
 }
 

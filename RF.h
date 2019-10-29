@@ -16,9 +16,6 @@ unsigned char RecibirRF (unsigned char numero_bytes);
 
 
 
-
-
-
 void ConfigurarSPI(void){
     //Habilito el modulo, modo maestro, fase
     SPI1STATBITS.SPIEN=1;
